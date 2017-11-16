@@ -28,7 +28,6 @@ public class GameController : MonoBehaviour {
                     Vector2 objectPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     hit.collider.gameObject.transform.position = objectPosition;
                 }
-
             }
         }
     }
