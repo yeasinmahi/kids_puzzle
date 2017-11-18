@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour , IPointerEnterHandler{
 
     public static GameController instance = null;
     private RaycastHit2D hit;
-    public bool IsLocked = false;
+    public bool isLocked = false;
+    public string imageName = string.Empty;
     void Awake()
     {
-        if (instance = null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -15,7 +17,7 @@ public class GameController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 	
 	// Update is called once per frame
@@ -26,11 +28,12 @@ public class GameController : MonoBehaviour {
     }
     public void Drag()
     {
+        
+
         if (Input.GetMouseButtonDown(0))
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         }
-
         if (Input.GetMouseButton(0))
         {
             if (hit.collider != null)
@@ -44,5 +47,9 @@ public class GameController : MonoBehaviour {
         }
         
     }
-    
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        Debug.Log("The cursor entered the selectable UI element.");
+    }
 }

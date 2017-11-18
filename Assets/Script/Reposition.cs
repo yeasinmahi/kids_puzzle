@@ -1,40 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class Reposition : MonoBehaviour {
+public class Reposition : MonoBehaviour, IDragHandler
+{
 
     private Vector2 currentPosition;
-    
-	void Start () {
-        currentPosition = transform.position;
-	}
+    private Vector2 obJectPosition;
+    public bool isLocked = false;
+    public string imageName = string.Empty;
 
-	void Update () {
+    void Start()
+    {
+        currentPosition = transform.position;
+    }
+
+    void Update()
+    {
         if (Input.GetMouseButtonUp(0))
         {
-            if (!GameController.instance.IsLocked)
+            if (!isLocked)
             {
                 transform.position = currentPosition;
             }
-            
+            else
+            {
+                transform.position = obJectPosition;
+            }
+
         }
+    }
+    public void OnDrag(PointerEventData EventData)
+    {
+
+        if (EventData.dragging)
+        {
+            transform.position = EventData.position;
+        };
+        //EventData.currentSelectedGameObject.transform.position = Input.mousePosition;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        if (Input.GetMouseButtonUp(0))
+
+        if (collision.gameObject.name.Equals(name))
         {
-            GameController.instance.IsLocked = true;
-            transform.position = collision.transform.position;
+            isLocked = true;
+            obJectPosition = collision.transform.position;
+        }
+
+
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.name.Equals(name))
+        {
+            isLocked = false;
         }
     }
-    void OnTriggerEnter2D(Collider2D collider2D)
+    void Get()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            GameController.instance.IsLocked = true;
-            transform.position = collider2D.transform.position;
+            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         }
     }
 }
