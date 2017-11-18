@@ -20,25 +20,40 @@ public class Reposition : MonoBehaviour, IDragHandler
     {
         if (Input.GetMouseButtonUp(0))
         {
-            if (!isLocked)
+            if (name.Equals(GameController.instance.dragObjectName))
             {
-                transform.position = currentPosition;
+                if (!isLocked)
+                {
+                    transform.position = currentPosition;
+
+                }
+                else
+                {
+                    transform.position = obJectPosition;
+                }
             }
-            else
-            {
-                transform.position = obJectPosition;
-            }
+            
 
         }
     }
+    
     public void OnDrag(PointerEventData EventData)
     {
-
+        
         if (EventData.dragging)
         {
             transform.position = EventData.position;
+            List<GameObject> gameObjects = EventData.hovered;
+            foreach(GameObject gameObject in gameObjects)
+            {
+                if (gameObject.tag.Equals("drag"))
+                {
+                    GameController.instance.dragObjectName = gameObject.name;
+                }
+            }
+            
         };
-        //EventData.currentSelectedGameObject.transform.position = Input.mousePosition;
+        
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -57,13 +72,6 @@ public class Reposition : MonoBehaviour, IDragHandler
         if (collision.gameObject.name.Equals(name))
         {
             isLocked = false;
-        }
-    }
-    void Get()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         }
     }
 }
