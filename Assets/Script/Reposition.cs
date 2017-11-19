@@ -25,11 +25,13 @@ public class Reposition : MonoBehaviour, IDragHandler
                 if (!isLocked)
                 {
                     transform.position = currentPosition;
+                    GameController.instance.PlaySound(GameController.MyAudioType.Mismatching);
 
                 }
                 else
                 {
                     transform.position = obJectPosition;
+                    GameController.instance.PlaySound(GameController.MyAudioType.Matching);
                 }
             }
             
