@@ -6,14 +6,13 @@ public class GameController : MonoBehaviour{
     public static GameController instance = null;
     public string dragObjectName = string.Empty;
     AudioSource gameAudio;
-    public AudioClip matchingSound, mismatchingSound;
+    public AudioClip backgroundSound, matchingSound, mismatchingSound;
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
             gameAudio = GetComponent<AudioSource>();
-
         }
         else if (instance != this)
         {
@@ -39,7 +38,7 @@ public class GameController : MonoBehaviour{
             gameAudio.PlayOneShot(mismatchingSound);
         }else if (audioType.Equals(MyAudioType.Background))
         {
-            
+            gameAudio.PlayOneShot(backgroundSound);
         }
         
     }

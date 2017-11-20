@@ -528,6 +528,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragObjectName: 
+  backgroundSound: {fileID: 8300000, guid: 0f56b9fcfbdaf6449a1f04e57cb6500d, type: 3}
   matchingSound: {fileID: 8300000, guid: e7a60c10a718d475787483a6b76d5e26, type: 3}
   mismatchingSound: {fileID: 8300000, guid: 4e755c6328efa49a4895b80e42673e7a, type: 3}
 --- !u!114 &948671715
@@ -552,11 +553,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e7a60c10a718d475787483a6b76d5e26, type: 3}
-  m_PlayOnAwake: 0
+  m_audioClip: {fileID: 8300000, guid: 0f56b9fcfbdaf6449a1f04e57cb6500d, type: 3}
+  m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

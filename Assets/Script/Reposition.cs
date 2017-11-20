@@ -26,7 +26,6 @@ public class Reposition : MonoBehaviour, IDragHandler
                 {
                     transform.position = currentPosition;
                     GameController.instance.PlaySound(GameController.MyAudioType.Mismatching);
-
                 }
                 else
                 {
