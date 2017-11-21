@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
+
 
 public class GameController : MonoBehaviour{
 
     public static GameController instance = null;
     public string dragObjectName = string.Empty;
-    AudioSource gameAudio;
+    public AudioSource gameAudio;
     public AudioClip backgroundSound, matchingSound, mismatchingSound;
+    public Canvas forgroundCanvas;
+    public GameObject ColoredImages;
     void Awake()
     {
         if (instance == null)
@@ -21,22 +23,31 @@ public class GameController : MonoBehaviour{
     }
 	
 	void Update () {
-
+         
     }
-    public enum MyAudioType{
-        Matching,
-        Mismatching,
-        Background
-    }
-    public void PlaySound(MyAudioType audioType)
+    public Canvas GetForgroundCanvas()
     {
-        if (audioType.Equals(MyAudioType.Matching))
+        Canvas[] canvases = transform.root.GetComponentsInChildren<Canvas>();
+        foreach (Canvas canvas in canvases)
+        {
+            if (canvas.name.Equals("ForgroundCanvas"))
+            {
+                return canvas;
+            }
+            
+        }
+        return null;
+        //GameObject gameObject = ColoredImages.GetComponent<GameObject>();
+    }
+    public void PlaySound(Others.MyAudioType audioType)
+    {
+        if (audioType.Equals(Others.MyAudioType.Matching))
         {
             gameAudio.PlayOneShot(matchingSound);
-        }else if (audioType.Equals(MyAudioType.Mismatching))
+        }else if (audioType.Equals(Others.MyAudioType.Mismatching))
         {
             gameAudio.PlayOneShot(mismatchingSound);
-        }else if (audioType.Equals(MyAudioType.Background))
+        }else if (audioType.Equals(Others.MyAudioType.Background))
         {
             gameAudio.PlayOneShot(backgroundSound);
         }

@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Reposition : MonoBehaviour, IDragHandler
+public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
 
     private Vector2 currentPosition;
     private Vector2 obJectPosition;
     public bool isLocked = false;
     public string imageName = string.Empty;
+    public Transform currentParrent;
 
     void Start()
     {
         currentPosition = transform.position;
+        currentParrent = transform.parent;
     }
 
     void Update()
@@ -25,48 +27,44 @@ public class Reposition : MonoBehaviour, IDragHandler
                 if (!isLocked)
                 {
                     transform.position = currentPosition;
-                    GameController.instance.PlaySound(GameController.MyAudioType.Mismatching);
+                    GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
                 }
                 else
                 {
                     transform.position = obJectPosition;
-                    GameController.instance.PlaySound(GameController.MyAudioType.Matching);
+                    GameController.instance.PlaySound(Others.MyAudioType.Matching);
                 }
             }
             
 
         }
     }
-    
+
     public void OnDrag(PointerEventData EventData)
     {
-        
+
         if (EventData.dragging)
         {
             transform.position = EventData.position;
             List<GameObject> gameObjects = EventData.hovered;
-            foreach(GameObject gameObject in gameObjects)
+            foreach (GameObject gameObject in gameObjects)
             {
                 if (gameObject.tag.Equals("drag"))
                 {
                     GameController.instance.dragObjectName = gameObject.name;
                 }
             }
-            
+
         };
-        
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-
         if (collision.gameObject.name.Equals(name))
         {
             isLocked = true;
             obJectPosition = collision.transform.position;
         }
-
-
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
@@ -74,5 +72,23 @@ public class Reposition : MonoBehaviour, IDragHandler
         {
             isLocked = false;
         }
+    }
+
+
+    public void OnEndDrag(PointerEventData eventData)
+    {
+        List<GameObject> gameObjects = eventData.hovered;
+        foreach (GameObject gameObject in gameObjects)
+        {
+            if (gameObject.tag.Equals("drag"))
+            {
+                gameObject.transform.parent = currentParrent;
+            }
+        }
+    }
+
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        transform.parent = GameController.instance.forgroundCanvas.transform;
     }
 }
