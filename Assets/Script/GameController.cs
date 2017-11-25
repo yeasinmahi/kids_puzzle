@@ -10,14 +10,21 @@ public class GameController : MonoBehaviour{
     public AudioClip backgroundSound, matchingSound, mismatchingSound;
     public Canvas forgroundCanvas;
     public GameObject ColoredImages;
-    public float duration = 10f;
+    public float maxDuration = 10f;
+    public float duration;
     public Text timerDisplayText;
+    public Slider progressBar;
+    public float progressbarCurrentValue;
+    public float progressbarMaxValue = 100f;
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
             gameAudio = GetComponent<AudioSource>();
+            progressBar.maxValue = progressbarMaxValue;
+            progressBar.value = progressbarMaxValue;
+            duration = maxDuration;
         }
         else if (instance != this)
         {
@@ -34,6 +41,8 @@ public class GameController : MonoBehaviour{
         else
         {
             duration -= Time.deltaTime;
+            progressbarCurrentValue = CalculateCurrentProgressValue();
+            progressBar.value = progressbarCurrentValue;
         }
         timerDisplayText.text = Math.Round(duration, 0).ToString();
 
@@ -41,9 +50,12 @@ public class GameController : MonoBehaviour{
 
     private void GameOver()
     {
-        
+        progressbarCurrentValue = 0;
     }
-
+    float CalculateCurrentProgressValue()
+    {
+        return progressbarMaxValue / maxDuration * duration;
+    }
     public Canvas GetForgroundCanvas()
     {
         Canvas[] canvases = transform.root.GetComponentsInChildren<Canvas>();
