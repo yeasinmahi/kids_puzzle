@@ -1,5 +1,6 @@
-﻿using UnityEngine;
-
+﻿using System;
+using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour{
 
@@ -9,6 +10,8 @@ public class GameController : MonoBehaviour{
     public AudioClip backgroundSound, matchingSound, mismatchingSound;
     public Canvas forgroundCanvas;
     public GameObject ColoredImages;
+    public float duration = 10f;
+    public Text timerDisplayText;
     void Awake()
     {
         if (instance == null)
@@ -23,8 +26,24 @@ public class GameController : MonoBehaviour{
     }
 	
 	void Update () {
-         
+        
+        if (duration <= 0.0f)
+        {
+            GameOver();
+        }
+        else
+        {
+            duration -= Time.deltaTime;
+        }
+        timerDisplayText.text = Math.Round(duration, 0).ToString();
+
     }
+
+    private void GameOver()
+    {
+        
+    }
+
     public Canvas GetForgroundCanvas()
     {
         Canvas[] canvases = transform.root.GetComponentsInChildren<Canvas>();
