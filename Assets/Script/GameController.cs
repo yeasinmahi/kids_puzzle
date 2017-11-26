@@ -16,6 +16,7 @@ public class GameController : MonoBehaviour{
     public Slider progressBar;
     public float progressbarCurrentValue;
     public float progressbarMaxValue = 100f;
+    public bool isPaused;
     void Awake()
     {
         if (instance == null)
@@ -31,27 +32,40 @@ public class GameController : MonoBehaviour{
             Destroy(gameObject);
         }
     }
-	
-	void Update () {
-        
-        if (duration <= 0.0f)
+    
+    void Update () {
+        if (!isPaused)
         {
-            GameOver();
+            if (duration <= 0.0f)
+            {
+                GameOver();
+            }
+            else
+            {
+                duration -= Time.deltaTime;
+                progressbarCurrentValue = CalculateCurrentProgressValue();
+                progressBar.value = progressbarCurrentValue;
+            }
+            timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
-        else
-        {
-            duration -= Time.deltaTime;
-            progressbarCurrentValue = CalculateCurrentProgressValue();
-            progressBar.value = progressbarCurrentValue;
-        }
-        timerDisplayText.text = Math.Round(duration, 0).ToString();
-
     }
 
     private void GameOver()
     {
         progressbarCurrentValue = 0;
     }
+    
+
+    public void OnPauseGame()
+    {
+        isPaused = true;
+    }
+
+    public void OnResumeGame()
+    {
+        isPaused = false;
+    }
+    
     float CalculateCurrentProgressValue()
     {
         return progressbarMaxValue / maxDuration * duration;

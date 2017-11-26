@@ -11,3 +11,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scene/InsideWorld.unity
     guid: 890a3682f6abd0b4fab3d7fe5ed8a7d0
+  - enabled: 1
+    path: Assets/Scene/Home.unity
+    guid: 87f1aeaa877cf0744ac3414db93808f5

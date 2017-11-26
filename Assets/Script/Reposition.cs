@@ -20,42 +20,45 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
 
     void Update()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (!GameController.instance.isPaused)
         {
-            if (name.Equals(GameController.instance.dragObjectName))
+            if (Input.GetMouseButtonUp(0))
             {
-                if (!isLocked)
+                if (name.Equals(GameController.instance.dragObjectName))
                 {
-                    transform.position = currentPosition;
-                    GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
-                }
-                else
-                {
-                    transform.position = obJectPosition;
-                    GameController.instance.PlaySound(Others.MyAudioType.Matching);
+                    if (!isLocked)
+                    {
+                        transform.position = currentPosition;
+                        GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
+                    }
+                    else
+                    {
+                        transform.position = obJectPosition;
+                        GameController.instance.PlaySound(Others.MyAudioType.Matching);
+                    }
                 }
             }
-            
-
         }
     }
 
     public void OnDrag(PointerEventData EventData)
     {
-
-        if (EventData.dragging)
+        if (!GameController.instance.isPaused)
         {
-            transform.position = EventData.position;
-            List<GameObject> gameObjects = EventData.hovered;
-            foreach (GameObject gameObject in gameObjects)
+            if (EventData.dragging)
             {
-                if (gameObject.tag.Equals("drag"))
+                transform.position = EventData.position;
+                List<GameObject> gameObjects = EventData.hovered;
+                foreach (GameObject gameObject in gameObjects)
                 {
-                    GameController.instance.dragObjectName = gameObject.name;
+                    if (gameObject.tag.Equals("drag"))
+                    {
+                        GameController.instance.dragObjectName = gameObject.name;
+                    }
                 }
-            }
 
-        };
+            }
+        }
     }
 
     void OnTriggerEnter2D(Collider2D collision)
