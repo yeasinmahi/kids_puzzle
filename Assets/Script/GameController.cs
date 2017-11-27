@@ -17,6 +17,8 @@ public class GameController : MonoBehaviour{
     public float progressbarCurrentValue;
     public float progressbarMaxValue = 100f;
     public bool isPaused;
+    public GameObject PauseCanvas;
+    public GameObject InformationCanvas;
     void Awake()
     {
         if (instance == null)
@@ -59,13 +61,28 @@ public class GameController : MonoBehaviour{
     public void OnPauseGame()
     {
         isPaused = true;
+        PauseCanvas.SetActive(true);
     }
 
     public void OnResumeGame()
     {
         isPaused = false;
+        PauseCanvas.SetActive(false);
     }
-    
+    public void OnRestartGame()
+    {
+
+    }
+    public void OnActiveInformation()
+    {
+        isPaused = true;
+        InformationCanvas.SetActive(true);
+    }
+    public void OnCloseInformation()
+    {
+        isPaused = false;
+        InformationCanvas.SetActive(false);
+    }
     float CalculateCurrentProgressValue()
     {
         return progressbarMaxValue / maxDuration * duration;
