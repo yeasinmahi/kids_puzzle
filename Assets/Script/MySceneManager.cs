@@ -36,6 +36,7 @@ public class MySceneManager : MonoBehaviour {
     }
     public void ScreenShootAndLoad()
     {
+        Screenshoot.takeScreenShot();
 
     }
     public void Share()

@@ -4,9 +4,9 @@ using System.IO;
 using UnityEngine;
 
 public class Screenshoot : MonoBehaviour {
-    public RectTransform rectT; 
-    int width; 
-    int height;
+    public static RectTransform rectT; 
+    static int width;
+    static int height;
     float scaleX;
     float scaleY;
     float scalingFraction;
@@ -14,6 +14,7 @@ public class Screenshoot : MonoBehaviour {
     float screenWidth;
 
     void Start () {
+        rectT = gameObject.GetComponent<RectTransform>();
         screenHeight = Screen.height;
         screenWidth = Screen.width;
         scaleX = screenHeight / 600;
@@ -35,35 +36,11 @@ public class Screenshoot : MonoBehaviour {
         Debug.Log("Width: " + width.ToString());
 
     }
-    private static string ScreenshootSaveLocation = "/Resource/";
-    private static string ScreenshootImageName = "Screenshoot.png";
-    private static string ScreenshootFullLocation = ScreenshootSaveLocation + ScreenshootImageName;
-    public static void CaptureScreenShot()
-    {
-        Texture2D tex = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
-        if (tex != null)
-        {
-            tex.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
-            tex.Apply();
-            var bytes = tex.EncodeToPNG();
-            if (bytes.Length > 0)
-            {
-                Debug.Log("Texture got");
-                SaveTextureToFile(tex, ScreenshootFullLocation);
-            }
-        }
-    }
+    private static string ScreenshootSaveLocation = "/Resources/";
+    public static string ScreenshootImageName = "Screenshoot.png";
+    public static string ScreenshootFullLocation = ScreenshootSaveLocation + ScreenshootImageName;
 
-
-    private static void SaveTextureToFile(Texture2D tex, string fileName)
-    {
-        var bytes = tex.EncodeToPNG();
-        var file = File.Open(ScreenshootFullLocation, FileMode.Create);
-        var binary = new BinaryWriter(file);
-        binary.Write(bytes);
-        file.Close();
-    }
-    public IEnumerator takeScreenShot()
+    public static IEnumerator takeScreenShot()
     {
         yield return new WaitForEndOfFrame();
 
@@ -82,11 +59,39 @@ public class Screenshoot : MonoBehaviour {
         File.WriteAllBytes(Application.dataPath + ScreenshootFullLocation, bytes);
 
     }
+    private IEnumerator load_image_preview(string _path)
+    {
+        WWW www = new WWW(_path);
+        yield return www;
+        Texture2D texTmp = new Texture2D(256, 256, TextureFormat.RGB24, false);
+
+        www.LoadImageIntoTexture(texTmp);
+    }
+    //public static void CaptureScreenShot()
+    //{
+    //    Texture2D tex = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+    //    if (tex != null)
+    //    {
+    //        tex.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0, false);
+    //        tex.Apply();
+    //        var bytes = tex.EncodeToPNG();
+    //        if (bytes.Length > 0)
+    //        {
+    //            Debug.Log("Texture got");
+    //            SaveTextureToFile(tex, ScreenshootFullLocation);
+    //        }
+    //    }
+    //}
+
+
+    //private static void SaveTextureToFile(Texture2D tex, string fileName)
+    //{
+    //    var bytes = tex.EncodeToPNG();
+    //    var file = File.Open(ScreenshootFullLocation, FileMode.Create);
+    //    var binary = new BinaryWriter(file);
+    //    binary.Write(bytes);
+    //    file.Close();
+    //}
+
     // Update is called once per frame
-    void Update () {
-        if (Input.GetMouseButton(0))
-        {
-            StartCoroutine(takeScreenShot());
-        }
-	}
 }

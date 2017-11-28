@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -19,6 +21,7 @@ public class GameController : MonoBehaviour{
     public bool isPaused;
     public GameObject PauseCanvas;
     public GameObject InformationCanvas;
+    public GameObject pauseImage;
     void Awake()
     {
         if (instance == null)
@@ -56,10 +59,18 @@ public class GameController : MonoBehaviour{
     {
         progressbarCurrentValue = 0;
     }
-    
 
-    public void OnPauseGame()
+    Texture2D tex;
+    public IEnumerator OnPauseGame()
     {
+        StartCoroutine( Screenshoot.takeScreenShot());
+        yield return new WaitForEndOfFrame();
+        
+        Image image = pauseImage.GetComponent<Image>();
+        Texture2D texture = image.sprite.texture;
+        var bytes = File.ReadAllBytes("Assets/Resources/" + Screenshoot.ScreenshootImageName);
+        texture.LoadImage(bytes);
+
         isPaused = true;
         PauseCanvas.SetActive(true);
     }

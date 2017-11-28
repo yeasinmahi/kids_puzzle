@@ -2217,6 +2217,7 @@ MonoBehaviour:
   isPaused: 0
   PauseCanvas: {fileID: 823618308}
   InformationCanvas: {fileID: 748687608}
+  pauseImage: {fileID: 1629147173}
 --- !u!114 &948671715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3477,7 +3478,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d054a78947fdf49813b4480fc5f6bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rectT: {fileID: 1228929103}
 --- !u!1 &1289582333
 GameObject:
   m_ObjectHideFlags: 0
