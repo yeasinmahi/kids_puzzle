@@ -9,7 +9,7 @@ public class GameController : MonoBehaviour{
     public static GameController instance = null;
     public string dragObjectName = string.Empty;
     public AudioSource gameAudio;
-    public AudioClip backgroundSound, matchingSound, mismatchingSound;
+    public AudioClip matchingSound, mismatchingSound;
     public Canvas forgroundCanvas;
     public GameObject ColoredImages;
     public float maxDuration = 10f;
@@ -60,16 +60,17 @@ public class GameController : MonoBehaviour{
         progressbarCurrentValue = 0;
     }
 
-    Texture2D tex;
     public IEnumerator OnPauseGame()
     {
+        
         StartCoroutine( Screenshoot.takeScreenShot());
         yield return new WaitForEndOfFrame();
-        
+
         Image image = pauseImage.GetComponent<Image>();
-        Texture2D texture = image.sprite.texture;
+        Texture2D texture = Screenshoot.GetTexture2DScreenshoot();
         var bytes = File.ReadAllBytes("Assets/Resources/" + Screenshoot.ScreenshootImageName);
         texture.LoadImage(bytes);
+        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100);
 
         isPaused = true;
         PauseCanvas.SetActive(true);
@@ -120,9 +121,6 @@ public class GameController : MonoBehaviour{
         }else if (audioType.Equals(Others.MyAudioType.Mismatching))
         {
             gameAudio.PlayOneShot(mismatchingSound);
-        }else if (audioType.Equals(Others.MyAudioType.Background))
-        {
-            gameAudio.PlayOneShot(backgroundSound);
         }
         
     }

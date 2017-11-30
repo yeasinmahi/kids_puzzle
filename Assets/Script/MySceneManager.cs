@@ -54,4 +54,8 @@ public class MySceneManager : MonoBehaviour {
             LoadScene("InsideWorld");
         }
     }
+    public void Mute()
+    {
+        HomeController.instance.MuteAudio();
+    }
 }

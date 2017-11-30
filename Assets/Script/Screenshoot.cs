@@ -48,7 +48,7 @@ public class Screenshoot : MonoBehaviour {
         Vector3[] worldPosition = new Vector3[4];
         rectT.GetWorldCorners(worldPosition);
 
-        var tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+        var tex = GetTexture2DScreenshoot();
         tex.ReadPixels(new Rect(worldPosition[0].x, worldPosition[0].y, width, height), 0, 0);
         tex.Apply();
 
@@ -58,6 +58,10 @@ public class Screenshoot : MonoBehaviour {
 
         File.WriteAllBytes(Application.dataPath + ScreenshootFullLocation, bytes);
 
+    }
+    public static Texture2D GetTexture2DScreenshoot()
+    {
+        return new Texture2D(width, height, TextureFormat.RGB24, false);
     }
     private IEnumerator load_image_preview(string _path)
     {
