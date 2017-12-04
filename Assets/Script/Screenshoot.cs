@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Screenshoot : MonoBehaviour {
     public static RectTransform rectT; 
@@ -12,8 +13,9 @@ public class Screenshoot : MonoBehaviour {
     float scalingFraction;
     float screenHeight;
     float screenWidth;
-
+    static string path;
     void Start () {
+        path = Application.persistentDataPath;
         rectT = gameObject.GetComponent<RectTransform>();
         screenHeight = Screen.height;
         screenWidth = Screen.width;
@@ -36,14 +38,12 @@ public class Screenshoot : MonoBehaviour {
         Debug.Log("Width: " + width.ToString());
 
     }
-    private static string ScreenshootSaveLocation = "/Resources/";
+    //private static string ScreenshootSaveLocation;
     public static string ScreenshootImageName = "Screenshoot.png";
-    public static string ScreenshootFullLocation = ScreenshootSaveLocation + ScreenshootImageName;
 
     public static IEnumerator takeScreenShot()
     {
         yield return new WaitForEndOfFrame();
-
         Vector2 temp = rectT.transform.position;
         Vector3[] worldPosition = new Vector3[4];
         rectT.GetWorldCorners(worldPosition);
@@ -56,20 +56,35 @@ public class Screenshoot : MonoBehaviour {
         var bytes = tex.EncodeToPNG();
         Destroy(tex);
 
-        File.WriteAllBytes(Application.dataPath + ScreenshootFullLocation, bytes);
+        Others.CreateDirectory(GetScreenshootSaveLocation());
+        Others.WriteDebugLog("Path", GetScreenshootSaveLocation());
 
+        File.SetAttributes(GetScreenshootSaveLocation(), FileAttributes.Normal);
+        File.WriteAllBytes(Path.Combine(GetScreenshootSaveLocation(), ScreenshootImageName), bytes);
+
+        
+
+    }
+    public static string GetScreenshootSaveLocation()
+    {
+        return path + "/Resources/";
     }
     public static Texture2D GetTexture2DScreenshoot()
     {
         return new Texture2D(width, height, TextureFormat.RGB24, false);
     }
-    private IEnumerator load_image_preview(string _path)
+    public static void LoadImages(Image image)
     {
-        WWW www = new WWW(_path);
-        yield return www;
-        Texture2D texTmp = new Texture2D(256, 256, TextureFormat.RGB24, false);
+        if (!Directory.Exists(GetScreenshootSaveLocation()))
+        {
+            Directory.CreateDirectory(GetScreenshootSaveLocation());
+        }
+        Texture2D texture = Screenshoot.GetTexture2DScreenshoot();
+        File.SetAttributes(GetScreenshootSaveLocation(), FileAttributes.Normal);
+        var bytes = File.ReadAllBytes(GetScreenshootSaveLocation()+ ScreenshootImageName);
+        texture.LoadImage(bytes);
+        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100);
 
-        www.LoadImageIntoTexture(texTmp);
     }
     //public static void CaptureScreenShot()
     //{

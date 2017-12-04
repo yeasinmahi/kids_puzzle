@@ -1,20 +1,28 @@
 ﻿using UnityEngine;
-
+using UnityEngine.UI;
+[RequireComponent(typeof(Button))]
 public class HomeController : MonoBehaviour {
 
     public bool isMoved = false;
     public static HomeController instance;
-    public AudioClip backgroundSound;
+    public AudioClip backgroundSound,scrollingSound;
     public AudioSource AudioSource;
     public bool isMute;
+    public Button MuteButton;
+    public Sprite mike;
+    public Sprite mike_disable;
+    private int counter = 0;
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            AudioSource = GetComponent<AudioSource>();
             PlayBackgroundSound();
+           
         }
+
         else if (instance != this)
         {
             Destroy(gameObject);
@@ -30,12 +38,26 @@ public class HomeController : MonoBehaviour {
 
     public void MuteAudio()
     {
-        isMute = !isMute;
-        AudioListener.pause = isMute ? false : true;
+        if (AudioListener.pause==true)
+        {
+            AudioListener.pause = false;
+            MuteButton.image.sprite = mike;
+            return;
+        }
+        AudioListener.pause = true;
+        MuteButton.image.sprite = mike_disable;
     }
 
     // Update is called once per frame
     void Update () {
-		
-	}
+        if (isMoved == true)
+        {
+            AudioSource.PlayOneShot(scrollingSound, 0.7F);
+        }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+            
+    }
 }

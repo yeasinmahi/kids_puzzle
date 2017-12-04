@@ -21,6 +21,18 @@ public class MySceneManager : MonoBehaviour {
         LoadScene("Main");
         //gameObject.SendMessage("OnRestartGame", SendMessageOptions.DontRequireReceiver);
     }
+    public void BackButton()
+    {
+        gameObject.SendMessage("OnBackButton", SendMessageOptions.DontRequireReceiver);
+    }
+    public void BackYes()
+    {
+        LoadScene("InsideWorld");
+    }
+    public void BackNo()
+    {
+        gameObject.SendMessage("OnBackNo", SendMessageOptions.DontRequireReceiver);
+    }
     public void Home()
     {
         LoadScene("Home");
@@ -54,8 +66,10 @@ public class MySceneManager : MonoBehaviour {
             LoadScene("InsideWorld");
         }
     }
+
     public void Mute()
     {
         HomeController.instance.MuteAudio();
+
     }
 }

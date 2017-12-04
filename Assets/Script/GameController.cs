@@ -18,10 +18,14 @@ public class GameController : MonoBehaviour{
     public Slider progressBar;
     public float progressbarCurrentValue;
     public float progressbarMaxValue = 100f;
-    public bool isPaused;
+    public bool isPaused=true;
     public GameObject PauseCanvas;
     public GameObject InformationCanvas;
-    public GameObject pauseImage;
+    public Image pauseImage;
+    public GameObject DelayDisplayCanvas;
+    public Text DelayDisplayText;
+    public GameObject PlayAgainCanvas;
+    public GameObject BackButtonCanvas;
     void Awake()
     {
         if (instance == null)
@@ -31,6 +35,7 @@ public class GameController : MonoBehaviour{
             progressBar.maxValue = progressbarMaxValue;
             progressBar.value = progressbarMaxValue;
             duration = maxDuration;
+            //StartCoroutine(Countdown(3));
         }
         else if (instance != this)
         {
@@ -43,7 +48,7 @@ public class GameController : MonoBehaviour{
         {
             if (duration <= 0.0f)
             {
-                GameOver();
+                TimeEnd();
             }
             else
             {
@@ -54,7 +59,46 @@ public class GameController : MonoBehaviour{
             timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
     }
+    IEnumerator Countdown(int count)
+    {
+        DelayDisplayCanvas.SetActive(true);
+        DelayDisplayText.fontSize = 150;
+        while (count >= 0)
+        {
 
+            // display something...
+            if (count == 0)
+            {
+                DelayDisplayText.fontSize = 100;
+                DelayDisplayText.text = "GO";
+                
+            }
+            else
+            {
+                DelayDisplayText.text = count.ToString();
+            }
+            
+            yield return new WaitForSeconds(1);
+            count--;
+        }
+
+        // count down is finished...
+        StartGame();
+    }
+
+    private void StartGame()
+    {
+        isPaused = false;
+        DelayDisplayCanvas.SetActive(false);
+
+    }
+
+    private void TimeEnd()
+    {
+        isPaused = true;
+        PlayAgainCanvas.SetActive(true);
+
+    }
     private void GameOver()
     {
         progressbarCurrentValue = 0;
@@ -62,23 +106,20 @@ public class GameController : MonoBehaviour{
 
     public IEnumerator OnPauseGame()
     {
-        
-        StartCoroutine( Screenshoot.takeScreenShot());
+        //TestCanvas.SetActive(true);
+        //testText.text = Screenshoot.GetScreenshootSaveLocation();
+
+        StartCoroutine(Screenshoot.takeScreenShot());
         yield return new WaitForEndOfFrame();
-
-        Image image = pauseImage.GetComponent<Image>();
-        Texture2D texture = Screenshoot.GetTexture2DScreenshoot();
-        var bytes = File.ReadAllBytes("Assets/Resources/" + Screenshoot.ScreenshootImageName);
-        texture.LoadImage(bytes);
-        image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100);
-
+        Screenshoot.LoadImages(pauseImage);
+        yield return new WaitForEndOfFrame();
         isPaused = true;
         PauseCanvas.SetActive(true);
     }
 
     public void OnResumeGame()
     {
-        isPaused = false;
+        StartCoroutine(Countdown(3));
         PauseCanvas.SetActive(false);
     }
     public void OnRestartGame()
@@ -99,6 +140,16 @@ public class GameController : MonoBehaviour{
     {
         return progressbarMaxValue / maxDuration * duration;
     }
+    public void OnBackButton()
+    {
+        isPaused = true;
+        BackButtonCanvas.SetActive(true);
+    }
+    public void OnBackNo()
+    {
+        isPaused = false;
+        BackButtonCanvas.SetActive(false);
+    }
     public Canvas GetForgroundCanvas()
     {
         Canvas[] canvases = transform.root.GetComponentsInChildren<Canvas>();
@@ -108,7 +159,6 @@ public class GameController : MonoBehaviour{
             {
                 return canvas;
             }
-            
         }
         return null;
         //GameObject gameObject = ColoredImages.GetComponent<GameObject>();
@@ -122,6 +172,5 @@ public class GameController : MonoBehaviour{
         {
             gameAudio.PlayOneShot(mismatchingSound);
         }
-        
     }
 }

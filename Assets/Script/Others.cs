@@ -6,10 +6,19 @@ public class Others : MonoBehaviour
     public enum MyAudioType
     {
         Matching,
-        Mismatching,
-        Background
+        Mismatching
     }
-    
+    public static void WriteDebugLog(string key, string value)
+    {
+        Debug.Log(key+": " + value);
+    }
+    public static void CreateDirectory(string path)
+    {
+        if (!Directory.Exists(path))
+        {
+            Directory.CreateDirectory(path);
+        }
+    }
     private const string MediaStoreImagesMediaClass = "android.provider.MediaStore$Images$Media";
     private static AndroidJavaObject _activity;
     public static string SaveImageToGallery(Texture2D texture2D, string title, string description)
