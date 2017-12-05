@@ -11,7 +11,6 @@ public class HomeController : MonoBehaviour {
     public Button MuteButton;
     public Sprite mike;
     public Sprite mike_disable;
-    private int counter = 0;
 
     void Awake()
     {
@@ -20,7 +19,6 @@ public class HomeController : MonoBehaviour {
             instance = this;
             AudioSource = GetComponent<AudioSource>();
             PlayBackgroundSound();
-           
         }
 
         else if (instance != this)

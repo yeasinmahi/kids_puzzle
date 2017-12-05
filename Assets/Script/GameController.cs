@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,16 +26,30 @@ public class GameController : MonoBehaviour{
     public Text DelayDisplayText;
     public GameObject PlayAgainCanvas;
     public GameObject BackButtonCanvas;
+
+    public Texture2D sourceColor;
+    public Texture2D sourceBlack;
+    public int slice = 2;
+    public GameObject colorImage0;
+    public GameObject colorImage1;
+    public GameObject colorImage2;
+    public GameObject colorImage3;
+    public GameObject blackImage0;
+    public GameObject blackImage1;
+    public GameObject blackImage2;
+    public GameObject blackImage3;
+
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            ReadyGamePlay();
             gameAudio = GetComponent<AudioSource>();
             progressBar.maxValue = progressbarMaxValue;
             progressBar.value = progressbarMaxValue;
             duration = maxDuration;
-            //StartCoroutine(Countdown(3));
+            StartCoroutine(Countdown(3));
         }
         else if (instance != this)
         {
@@ -88,11 +102,39 @@ public class GameController : MonoBehaviour{
 
     private void StartGame()
     {
+        
         isPaused = false;
         DelayDisplayCanvas.SetActive(false);
 
     }
 
+    public void ReadyGamePlay()
+    {
+        Sprite[] colorSprites = SliceController.GetSliceGameObjectTexture(sourceColor, 2);
+
+        colorImage0.GetComponent<Image>().sprite = colorSprites[0];
+        colorImage1.GetComponent<Image>().sprite = colorSprites[1];
+        colorImage2.GetComponent<Image>().sprite = colorSprites[2];
+        colorImage3.GetComponent<Image>().sprite = colorSprites[3];
+
+        Sprite[] blackSprites = SliceController.GetSliceGameObjectTexture(sourceBlack, 2);
+
+        blackImage0.GetComponent<Image>().sprite = blackSprites[0];
+        blackImage1.GetComponent<Image>().sprite = blackSprites[1];
+        blackImage2.GetComponent<Image>().sprite = blackSprites[2];
+        blackImage3.GetComponent<Image>().sprite = blackSprites[3];
+
+
+    }
+    private Texture2D makeBlackAndWhite(Texture2D texture) 
+    {
+        texture.SetPixel(0, 0, new Color(1.0f, 1.0f, 1.0f, 0.5f));
+        texture.SetPixel(1, 0, Color.clear);
+        texture.SetPixel(0, 1, Color.white);
+        texture.SetPixel(1, 1, Color.black);
+        texture.Apply();
+        return texture;
+    }
     private void TimeEnd()
     {
         isPaused = true;

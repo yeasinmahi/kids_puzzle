@@ -29,11 +29,13 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
                     if (!isLocked)
                     {
                         transform.position = currentPosition;
+                        HomeController.instance.AudioSource.volume = 0.5f;
                         GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
                     }
                     else
                     {
                         transform.position = obJectPosition;
+                        HomeController.instance.AudioSource.volume = 0.5f;
                         GameController.instance.PlaySound(Others.MyAudioType.Matching);
                     }
                 }

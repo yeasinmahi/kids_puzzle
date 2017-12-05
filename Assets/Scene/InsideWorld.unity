@@ -725,7 +725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1a6a04603891d1418ebb08eeb3c3636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameObject: {fileID: 0}
+  gameObject: {fileID: 1116109346}
 --- !u!4 &501374813
 Transform:
   m_ObjectHideFlags: 0
@@ -1232,7 +1232,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 781014559}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -329.99, y: 372.8, z: 0}
+  m_LocalPosition: {x: -333.98, y: 367.56, z: 0}
   m_LocalScale: {x: 0.9999, y: 0.9999, z: 0.9999}
   m_Children:
   - {fileID: 952453731}
@@ -1241,8 +1241,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -329.99, y: 372.8}
-  m_SizeDelta: {x: 92.82, y: 65.73}
+  m_AnchoredPosition: {x: -333.98, y: 367.56}
+  m_SizeDelta: {x: 84.83, y: 76.22}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &781014561
 MonoBehaviour:
@@ -1309,8 +1309,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 501374812}
-        m_MethodName: Mute
+      - m_Target: {fileID: 1116109349}
+        m_MethodName: MuteAudio
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1779,6 +1779,54 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   image: {fileID: 1121986672}
+--- !u!1 &1116109346
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1116109347}
+  - component: {fileID: 1116109349}
+  m_Layer: 0
+  m_Name: InsideWorldController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1116109347
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1116109346}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 494.96725, y: 50.716305, z: -4.400749}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1116109349
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1116109346}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97f394c8622524a43b6765fa402219b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMoved: 0
+  backgroundSound: {fileID: 0}
+  scrollingSound: {fileID: 0}
+  AudioSource: {fileID: 0}
+  isMute: 0
+  MuteButton: {fileID: 781014562}
+  mike: {fileID: 21300000, guid: e17efafe9e95eb249ab54808c8c82598, type: 3}
+  mike_disable: {fileID: 21300000, guid: eef83c5b17fb046489e46406af4ce5eb, type: 3}
 --- !u!1 &1121986672
 GameObject:
   m_ObjectHideFlags: 0

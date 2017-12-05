@@ -70,6 +70,5 @@ public class MySceneManager : MonoBehaviour {
     public void Mute()
     {
         HomeController.instance.MuteAudio();
-
     }
 }
