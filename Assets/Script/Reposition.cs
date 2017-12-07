@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDragHandler
 {
@@ -9,13 +10,13 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     private Vector2 currentPosition;
     private Vector2 obJectPosition;
     public bool isLocked = false;
-    public string imageName = string.Empty;
     public Transform currentParrent;
 
     void Start()
     {
         currentPosition = transform.position;
         currentParrent = transform.parent;
+        
     }
 
     void Update()
@@ -29,13 +30,20 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
                     if (!isLocked)
                     {
                         transform.position = currentPosition;
-                        HomeController.instance.AudioSource.volume = 0.5f;
+                        if (HomeController.instance != null)
+                        {
+                            HomeController.instance.AudioSource.volume = 0.5f;
+                        }
+                        
                         GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
                     }
                     else
                     {
                         transform.position = obJectPosition;
-                        HomeController.instance.AudioSource.volume = 0.5f;
+                        if (HomeController.instance != null)
+                        {
+                            HomeController.instance.AudioSource.volume = 0.5f;
+                        }
                         GameController.instance.PlaySound(Others.MyAudioType.Matching);
                     }
                 }
@@ -51,11 +59,14 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
             {
                 transform.position = EventData.position;
                 List<GameObject> gameObjects = EventData.hovered;
-                foreach (GameObject gameObject in gameObjects)
+                foreach (GameObject go in gameObjects)
                 {
-                    if (gameObject.tag.Equals("drag"))
+                    if (go.tag.Equals("drag"))
                     {
-                        GameController.instance.dragObjectName = gameObject.name;
+                        string s = go.GetComponent<Image>().sprite.name;
+                        GameController.instance.dragObjectName = go.name;
+                        Others.WriteDebugLog("debug:", go.name);
+                        break;
                     }
                 }
 
@@ -65,7 +76,8 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Equals(name))
+        string s = collision.gameObject.GetComponent<Image>().sprite.name;
+        if (collision.gameObject.GetComponent<Image>().sprite.name.Equals(GetComponent<Image>().sprite.name))
         {
             isLocked = true;
             obJectPosition = collision.transform.position;
@@ -73,7 +85,7 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.name.Equals(name))
+        if (collision.gameObject.GetComponent<Image>().sprite.name.Equals(GetComponent<Image>().sprite.name))
         {
             isLocked = false;
         }
@@ -83,11 +95,11 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     public void OnEndDrag(PointerEventData eventData)
     {
         List<GameObject> gameObjects = eventData.hovered;
-        foreach (GameObject gameObject in gameObjects)
+        foreach (GameObject go in gameObjects)
         {
-            if (gameObject.tag.Equals("drag"))
+            if (go.tag.Equals("drag"))
             {
-                gameObject.transform.parent = currentParrent;
+                go.transform.parent = currentParrent;
             }
         }
     }

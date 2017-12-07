@@ -91,7 +91,7 @@ namespace UnityEngine.UI.Extensions
         public int fastSwipeThreshold = 100;
 
         // drag related
-        protected bool startDrag = true;
+        public bool startDrag = true;
 
         protected Vector3 positionOnDragStart = new Vector3();
 
@@ -547,9 +547,11 @@ namespace UnityEngine.UI.Extensions
 
             if (startDrag)
             {
+                InsideWorldController.instance.startDrag = true;
                 OnBeginDrag(eventData);
                 startDrag = false;
             }
+
         }
         #endregion
     }

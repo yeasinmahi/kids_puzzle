@@ -54,4 +54,37 @@ public class Others : MonoBehaviour
             return _activity;
         }
     }
+    public static Sprite[] SliceTexureintoSprite(Texture2D source, int slice)
+    {
+        Sprite[] sprites = new Sprite[slice * slice];
+        float width = source.width / slice;
+        float height = source.height / slice;
+        int counter = 0;
+        for (int i = 0; i < slice; i++)
+        {
+            for (int j = 0; j < slice; j++)
+            {
+                Sprite newSprite = Sprite.Create(source, new Rect(i * width, j * height, width, height), new Vector2(0.5f, 0.5f));
+                //GameObject gameObject = new GameObject();
+
+                //Image image = gameObject.AddComponent<Image>();
+                //image.sprite = newSprite;
+                newSprite.name = (counter + 1).ToString();
+                sprites[counter] = newSprite;
+                counter++;
+            }
+        }
+        return sprites;
+    }
+    public static Sprite[] Reshuffle(Sprite[] sprites)
+    {
+        for (int t = 0; t < sprites.Length; t++)
+        {
+            Sprite tmp = sprites[t];
+            int r = Random.Range(t, sprites.Length);
+            sprites[t] = sprites[r];
+            sprites[r] = tmp;
+        }
+        return sprites;
+    }
 }

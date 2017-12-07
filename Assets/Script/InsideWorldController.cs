@@ -1,18 +1,47 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-[RequireComponent(typeof(Button))]
+using UnityEngine.UI.Extensions;
 
 public class InsideWorldController : MonoBehaviour {
 
-    public bool isMoved = false;
-    public static InsideWorldController bb;
+    public bool startDrag = false;
+    public static InsideWorldController instance;
     public AudioClip backgroundSound, scrollingSound;
     public AudioSource AudioSource;
     public bool isMute;
     public Button MuteButton;
     public Sprite mike;
     public Sprite mike_disable;
-    
+
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            AudioSource = GetComponent<AudioSource>();
+            PlayBackgroundSound();
+        }
+
+        else if (instance != this)
+        {
+            Destroy(gameObject);
+        }
+        if (AudioListener.pause == true)
+        {
+            MuteButton.image.sprite = mike_disable;
+        }
+        else
+        {
+            MuteButton.image.sprite = mike;
+        }
+    }
+    public void PlayBackgroundSound()
+    {
+        AudioSource.clip = backgroundSound;
+        AudioSource.loop = true;
+        AudioSource.Play();
+    }
+
     public void MuteAudio()
     {
         if (AudioListener.pause == true)
@@ -27,6 +56,13 @@ public class InsideWorldController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+
+        if(startDrag == true)
+        {
+            AudioSource.PlayOneShot(scrollingSound, 0.7F);
+        }
+     
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();

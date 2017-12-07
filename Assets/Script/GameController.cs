@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour{
+public class GameController : MonoBehaviour
+{
 
     public static GameController instance = null;
     public string dragObjectName = string.Empty;
@@ -12,7 +12,7 @@ public class GameController : MonoBehaviour{
     public AudioClip matchingSound, mismatchingSound;
     public Canvas forgroundCanvas;
     public GameObject ColoredImages;
-    public float maxDuration = 10f;
+    public float maxDuration = 30f;
     public float duration;
     public Text timerDisplayText;
     public Slider progressBar;
@@ -39,6 +39,11 @@ public class GameController : MonoBehaviour{
     public GameObject blackImage2;
     public GameObject blackImage3;
 
+
+    public Transform currentParrent;
+
+    
+
     void Awake()
     {
         if (instance == null)
@@ -49,7 +54,8 @@ public class GameController : MonoBehaviour{
             progressBar.maxValue = progressbarMaxValue;
             progressBar.value = progressbarMaxValue;
             duration = maxDuration;
-            StartCoroutine(Countdown(3));
+
+            StartCoroutine(Countdown(1));
         }
         else if (instance != this)
         {
@@ -73,6 +79,7 @@ public class GameController : MonoBehaviour{
             timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
     }
+    
     IEnumerator Countdown(int count)
     {
         DelayDisplayCanvas.SetActive(true);
@@ -105,20 +112,19 @@ public class GameController : MonoBehaviour{
         
         isPaused = false;
         DelayDisplayCanvas.SetActive(false);
-
+        
     }
 
     public void ReadyGamePlay()
     {
-        Sprite[] colorSprites = SliceController.GetSliceGameObjectTexture(sourceColor, 2);
-
+        Sprite[] colorSprites = Others.SliceTexureintoSprite(sourceColor, 2);
+        colorSprites = Others.Reshuffle(colorSprites);
         colorImage0.GetComponent<Image>().sprite = colorSprites[0];
         colorImage1.GetComponent<Image>().sprite = colorSprites[1];
         colorImage2.GetComponent<Image>().sprite = colorSprites[2];
         colorImage3.GetComponent<Image>().sprite = colorSprites[3];
 
-        Sprite[] blackSprites = SliceController.GetSliceGameObjectTexture(sourceBlack, 2);
-
+        Sprite[] blackSprites = Others.SliceTexureintoSprite(sourceBlack, 2);
         blackImage0.GetComponent<Image>().sprite = blackSprites[0];
         blackImage1.GetComponent<Image>().sprite = blackSprites[1];
         blackImage2.GetComponent<Image>().sprite = blackSprites[2];
@@ -215,4 +221,40 @@ public class GameController : MonoBehaviour{
             gameAudio.PlayOneShot(mismatchingSound);
         }
     }
+    //public void OnDrag(PointerEventData EventData)
+    //{
+    //    if (!isPaused)
+    //    {
+    //        if (EventData.dragging)
+    //        {
+                
+    //            transform.position = EventData.position;
+    //            List<GameObject> gameObjects = EventData.hovered;
+    //            foreach (GameObject gameObject in gameObjects)
+    //            {
+    //                if (gameObject.tag.Equals("drag"))
+    //                {
+    //                    GameController.instance.dragObjectName = gameObject.name;
+    //                }
+    //            }
+
+    //        }
+    //    }
+    //}
+    //public void OnEndDrag(PointerEventData eventData)
+    //{
+    //    List<GameObject> gameObjects = eventData.hovered;
+    //    foreach (GameObject gameObject in gameObjects)
+    //    {
+    //        if (gameObject.tag.Equals("drag"))
+    //        {
+    //            gameObject.transform.parent = currentParrent;
+    //        }
+    //    }
+    //}
+
+    //public void OnBeginDrag(PointerEventData eventData)
+    //{
+    //    transform.parent = forgroundCanvas.transform;
+    //}
 }

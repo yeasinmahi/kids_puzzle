@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-[RequireComponent(typeof(Button))]
 public class HomeController : MonoBehaviour {
 
     public bool isMoved = false;
@@ -25,8 +24,17 @@ public class HomeController : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        DontDestroyOnLoad(gameObject);
+        if (AudioListener.pause == true)
+        {
+            MuteButton.image.sprite = mike_disable;
+        }
+        else
+        {
+            MuteButton.image.sprite = mike;
+        }
+        //DontDestroyOnLoad(gameObject);
     }
+
     public void PlayBackgroundSound()
     {
         AudioSource.clip = backgroundSound;
@@ -56,6 +64,6 @@ public class HomeController : MonoBehaviour {
         {
             Application.Quit();
         }
-            
+
     }
 }

@@ -157,6 +157,7 @@ public class ListPositionCtrl : MonoBehaviour
 				listBox.keepSliding = false;
 		} else if (Input.GetMouseButton(0)) {
             HomeController.instance.isMoved = true;
+
             _currentInputPos_L = Camera.main.ScreenToWorldPoint(
 				new Vector3(Input.mousePosition.x, Input.mousePosition.y, canvasDistance));
 			_currentInputPos_L = divideComponent(_currentInputPos_L, transform.lossyScale);
