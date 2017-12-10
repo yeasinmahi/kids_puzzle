@@ -42,7 +42,15 @@ public class GameController : MonoBehaviour
 
     public Transform currentParrent;
 
-    
+    public float threeStarTime;
+    public float twoStarTime;
+    public static int currentStar = 3;
+
+    public GameObject toy1;
+    public GameObject toy2;
+    public GameObject toy3;
+
+
 
     void Awake()
     {
@@ -54,7 +62,8 @@ public class GameController : MonoBehaviour
             progressBar.maxValue = progressbarMaxValue;
             progressBar.value = progressbarMaxValue;
             duration = maxDuration;
-
+            threeStarTime = progressbarMaxValue / (float)1.5;
+            twoStarTime = progressbarMaxValue / 2;
             StartCoroutine(Countdown(1));
         }
         else if (instance != this)
@@ -74,20 +83,42 @@ public class GameController : MonoBehaviour
             {
                 duration -= Time.deltaTime;
                 progressbarCurrentValue = CalculateCurrentProgressValue();
+                currentStar = CalculateStar();
+                ManageToyStar(currentStar);
                 progressBar.value = progressbarCurrentValue;
             }
             timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
     }
-    
+    public int CalculateStar()
+    {
+        if (progressbarCurrentValue > threeStarTime)
+        {
+            return 3;
+        }
+        if (progressbarCurrentValue > twoStarTime)
+        {
+            return 2;
+        }
+        return 1;
+    }
+    public void ManageToyStar(int currentStar)
+    {
+        if (currentStar == 2)
+        {
+            toy3.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0.5f);
+        }else if (currentStar == 1)
+        {
+            toy2.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0.5f);
+        }
+
+    }
     IEnumerator Countdown(int count)
     {
         DelayDisplayCanvas.SetActive(true);
         DelayDisplayText.fontSize = 150;
         while (count >= 0)
         {
-
-            // display something...
             if (count == 0)
             {
                 DelayDisplayText.fontSize = 100;
@@ -129,10 +160,9 @@ public class GameController : MonoBehaviour
         blackImage1.GetComponent<Image>().sprite = blackSprites[1];
         blackImage2.GetComponent<Image>().sprite = blackSprites[2];
         blackImage3.GetComponent<Image>().sprite = blackSprites[3];
-
-
+        
     }
-    private Texture2D makeBlackAndWhite(Texture2D texture) 
+    private Texture2D MakeBlackAndWhite(Texture2D texture) 
     {
         texture.SetPixel(0, 0, new Color(1.0f, 1.0f, 1.0f, 0.5f));
         texture.SetPixel(1, 0, Color.clear);
@@ -145,7 +175,6 @@ public class GameController : MonoBehaviour
     {
         isPaused = true;
         PlayAgainCanvas.SetActive(true);
-
     }
     private void GameOver()
     {
@@ -154,9 +183,6 @@ public class GameController : MonoBehaviour
 
     public IEnumerator OnPauseGame()
     {
-        //TestCanvas.SetActive(true);
-        //testText.text = Screenshoot.GetScreenshootSaveLocation();
-
         StartCoroutine(Screenshoot.takeScreenShot());
         yield return new WaitForEndOfFrame();
         Screenshoot.LoadImages(pauseImage);
@@ -176,6 +202,7 @@ public class GameController : MonoBehaviour
     }
     public void OnActiveInformation()
     {
+
         isPaused = true;
         InformationCanvas.SetActive(true);
     }

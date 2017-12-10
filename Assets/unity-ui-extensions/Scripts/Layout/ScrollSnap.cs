@@ -10,6 +10,7 @@
 /// - fixed current page made it independent from pivot
 /// - replaced pagination with delegate function
 using System;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI.Extensions
@@ -19,6 +20,7 @@ namespace UnityEngine.UI.Extensions
     [AddComponentMenu("UI/Extensions/Scroll Snap")]
     public class ScrollSnap : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler
     {
+        public GameObject image;
         // needed because of reversed behaviour of axis Y compared to X
         // (positions of children lower in children list in horizontal directions grows when in vertical it gets smaller)
         public enum ScrollDirection
@@ -494,6 +496,7 @@ namespace UnityEngine.UI.Extensions
         public void OnEndDrag(PointerEventData eventData)
         {
             startDrag = true;
+            InsideWorldController.instance.startDrag = false;
             float change = 0;
 
             if (direction == ScrollDirection.Horizontal)
@@ -539,10 +542,16 @@ namespace UnityEngine.UI.Extensions
                 lerp = true;
                 lerpTarget = pageAnchorPositions[CurrentPage()];
             }
+           
+            
         }
 
         public void OnDrag(PointerEventData eventData)
         {
+            if (!InsideWorldController.instance.isDraged)
+            {
+                InsideWorldController.instance.isDraged = true;
+            }
             lerp = false;
 
             if (startDrag)

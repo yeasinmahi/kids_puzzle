@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.UI.Extensions;
 
@@ -12,6 +13,9 @@ public class InsideWorldController : MonoBehaviour {
     public Button MuteButton;
     public Sprite mike;
     public Sprite mike_disable;
+    public bool isDraged = false;
+    public GameObject image;
+    public GameObject hoveredImage;
 
     void Awake()
     {
@@ -66,6 +70,14 @@ public class InsideWorldController : MonoBehaviour {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Application.Quit();
+        }
+        if (Input.GetMouseButtonUp(0))
+        {
+            if (!isDraged)
+            {
+                image.GetComponent<Image>().sprite = hoveredImage.GetComponent<Image>().sprite;
+            }
+            isDraged = false;
         }
     }
 }

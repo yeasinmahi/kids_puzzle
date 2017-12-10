@@ -61,9 +61,7 @@ public class Screenshoot : MonoBehaviour {
 
         File.SetAttributes(GetScreenshootSaveLocation(), FileAttributes.Normal);
         File.WriteAllBytes(Path.Combine(GetScreenshootSaveLocation(), ScreenshootImageName), bytes);
-
         
-
     }
     public static string GetScreenshootSaveLocation()
     {
