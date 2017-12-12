@@ -1714,7 +1714,7 @@ GameObject:
   - component: {fileID: 546443891}
   - component: {fileID: 546443890}
   m_Layer: 5
-  m_Name: RestartButon
+  m_Name: SaveButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1805,7 +1805,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 962548787}
-        m_MethodName: RestartGame
+        m_MethodName: Save
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2783,8 +2783,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 779669511}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 326.5, y: 188, z: 0}
-  m_LocalScale: {x: 0.81625, y: 0.81625, z: 0.81625}
+  m_LocalPosition: {x: 640, y: 400, z: 0}
+  m_LocalScale: {x: 1.6, y: 1.6, z: 1.6}
   m_Children:
   - {fileID: 528835232}
   m_Father: {fileID: 0}
@@ -3129,6 +3129,7 @@ MonoBehaviour:
   isPaused: 1
   PauseCanvas: {fileID: 823618308}
   InformationCanvas: {fileID: 748687608}
+  InformationImageImage: {fileID: 2117062126}
   pauseImage: {fileID: 1629147175}
   DelayDisplayCanvas: {fileID: 1475288478}
   DelayDisplayText: {fileID: 766050853}
@@ -3153,6 +3154,8 @@ MonoBehaviour:
   toy1: {fileID: 1937184819}
   toy2: {fileID: 665609445}
   toy3: {fileID: 724177850}
+  gameImageSourceColor: 5.jpg
+  gameImageSourceBlack: 5.b.jpg
   matchCounter: 0
 --- !u!82 &948671716
 AudioSource:
@@ -3569,7 +3572,7 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 968202575}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -150.47678, z: 0}
+  m_LocalPosition: {x: 0, y: -250.55334, z: 0}
   m_LocalScale: {x: 0.99999994, y: 0.99999994, z: 0.99999994}
   m_Children:
   - {fileID: 1812344867}
@@ -7179,7 +7182,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1837624511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7244,8 +7247,8 @@ RectTransform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1837624510}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 326.5, y: 188, z: 0}
-  m_LocalScale: {x: 0.81625, y: 0.81625, z: 0.81625}
+  m_LocalPosition: {x: 179, y: 383.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 93365914}
   - {fileID: 1966407182}

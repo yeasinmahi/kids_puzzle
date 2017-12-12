@@ -57,7 +57,7 @@ public class MySceneManager : MonoBehaviour {
     }
     public void Save()
     {
-
+        GameController.instance.SaveImageToGallery();
     }
     public void LoadInsideWorld()
     {

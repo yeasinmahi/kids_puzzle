@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,7 @@ public class GameController : MonoBehaviour
     public bool isPaused=true;
     public GameObject PauseCanvas;
     public GameObject InformationCanvas;
+    public Image InformationImageImage;
     public Image pauseImage;
     public GameObject DelayDisplayCanvas;
     public Text DelayDisplayText;
@@ -52,6 +54,10 @@ public class GameController : MonoBehaviour
     public GameObject toy2;
     public GameObject toy3;
 
+    
+
+    public string gameImageSourceColor = "5.jpg";
+    public string gameImageSourceBlack = "5.b.jpg";
     public int matchCounter = 0;
 
     void Awake()
@@ -66,7 +72,7 @@ public class GameController : MonoBehaviour
             progressBar.maxValue = progressbarMaxValue;
             progressBar.value = progressbarMaxValue;
             duration = maxDuration;
-            threeStarTime = progressbarMaxValue / (float)1.5;
+            threeStarTime = progressbarMaxValue / 1.5f;
             twoStarTime = progressbarMaxValue / 2;
             StartCoroutine(Countdown(countDownTime));
         }
@@ -84,6 +90,9 @@ public class GameController : MonoBehaviour
         DelayDisplayCanvas.SetActive(false);
         PlayAgainCanvas.SetActive(false);
         BackButtonCanvas.SetActive(false);
+
+        sourceColor = ImageManager.LoadImageFromSprite(gameImageSourceColor);
+        sourceBlack = ImageManager.LoadImageFromSprite(gameImageSourceBlack);
     }
 
     void Update () {
@@ -224,6 +233,8 @@ public class GameController : MonoBehaviour
     {
 
         isPaused = true;
+        //InformationCanvas.GetComponent<Image>().sprite = Others.CreateSpriteFromTexture(sourceColor);
+        InformationImageImage.sprite = Others.CreateSpriteFromTexture(sourceColor);
         InformationCanvas.SetActive(true);
     }
     public void OnCloseInformation()
@@ -268,13 +279,20 @@ public class GameController : MonoBehaviour
             gameAudio.PlayOneShot(mismatchingSound);
         }
     }
+    public void SaveImageToGallery()
+    {
+        ImageManager.SaveImage(sourceColor, ImageManager.GetImageSaveLocation(),ImageManager.fileName);
+        ImageManager.MoveAsset(ImageManager.GetImageSaveLocation(), ImageManager.externalFolderLocation, ImageManager.fileName);
+    }
+
+
     //public void OnDrag(PointerEventData EventData)
     //{
     //    if (!isPaused)
     //    {
     //        if (EventData.dragging)
     //        {
-                
+
     //            transform.position = EventData.position;
     //            List<GameObject> gameObjects = EventData.hovered;
     //            foreach (GameObject gameObject in gameObjects)

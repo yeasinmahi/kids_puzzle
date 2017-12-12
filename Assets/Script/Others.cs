@@ -87,4 +87,8 @@ public class Others : MonoBehaviour
         }
         return sprites;
     }
+    public static Sprite CreateSpriteFromTexture(Texture2D texture)
+    {
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100);
+    }
 }
