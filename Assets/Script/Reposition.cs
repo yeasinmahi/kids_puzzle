@@ -115,6 +115,7 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     {
         if (!isLocked)
         {
+            GameController.instance.onDrag = false;
             List<GameObject> gameObjects = eventData.hovered;
             foreach (GameObject go in gameObjects)
             {
@@ -130,6 +131,7 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     {
         if (!isLocked)
         {
+            GameController.instance.onDrag = true;
             transform.parent = GameController.instance.forgroundCanvas.transform;
         }
     }

@@ -20,29 +20,22 @@ public class ImageManager : MonoBehaviour
     {
 
     }
-    public static string getFullPathOfSprite(string fileName)
-    {
-        assetPath = Application.dataPath;
-        //return Path.Combine(Path.Combine(assetPath,"Sprites"), fileName);
-        return assetPath + "/Sprites/" + fileName;
-    }
+    //public static string getFullPathOfSprite(string fileName)
+    //{
+        
+    //    assetPath = Application.dataPath;
+    //    //return Path.Combine(Path.Combine(assetPath,"Sprites"), fileName);
+    //    return assetPath + "/Sprites/" + fileName;
+    //}
     public static Texture2D LoadImageFromSprite(string fileName)
     {
-        string fullPAth = getFullPathOfSprite(fileName);
         Texture2D tex = null;
-        byte[] fileData;
-
-        if (File.Exists(fullPAth))
-        {
-            fileData = File.ReadAllBytes(fullPAth);
-            tex = new Texture2D(2, 2);
-            tex.LoadImage(fileData);
-        }
+        tex = Resources.Load(fileName) as Texture2D;
         return tex;
     }
     public static void SaveImage(Texture2D texture, string fileLocation, string fileName)
     {
-        var bytes = texture.EncodeToPNG();
+        byte[] bytes = texture.EncodeToPNG();
         Others.CreateDirectory(fileLocation);
         File.SetAttributes(fileLocation, FileAttributes.Normal);
         File.WriteAllBytes(fileLocation + fileName, bytes);

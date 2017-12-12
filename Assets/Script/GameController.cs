@@ -6,11 +6,11 @@ using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
-
+    public bool onDrag = false;
     public static GameController instance = null;
     public string dragObjectName = string.Empty;
     public AudioSource gameAudio;
-    public AudioClip matchingSound, mismatchingSound;
+    public AudioClip matchingSound, mismatchingSound, scrollingSound;
     public Canvas forgroundCanvas;
     public GameObject ColoredImages;
     public float maxDuration = 30f;
@@ -22,13 +22,14 @@ public class GameController : MonoBehaviour
     public bool isPaused=true;
     public GameObject PauseCanvas;
     public GameObject InformationCanvas;
-    public Image InformationImageImage;
+    public Image InformationImage;
     public Image pauseImage;
     public GameObject DelayDisplayCanvas;
     public Text DelayDisplayText;
     public GameObject PlayAgainCanvas;
     public GameObject BackButtonCanvas;
     public GameObject GameOverCanvas;
+    public Image GameOverImage;
 
     public Texture2D sourceColor;
     public Texture2D sourceBlack;
@@ -54,10 +55,13 @@ public class GameController : MonoBehaviour
     public GameObject toy2;
     public GameObject toy3;
 
-    
+    public GameObject gameOverToy1;
+    public GameObject gameOverToy2;
+    public GameObject gameOverToy3;
 
-    public string gameImageSourceColor = "5.jpg";
-    public string gameImageSourceBlack = "5.b.jpg";
+
+    public string gameImageSourceColor = "5";
+    public string gameImageSourceBlack = "5.b";
     public int matchCounter = 0;
 
     void Awake()
@@ -116,6 +120,10 @@ public class GameController : MonoBehaviour
             }
             timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
+        if (onDrag == true)
+        {
+            gameAudio.PlayOneShot(scrollingSound, 0.7F);
+        }
     }
     public int CalculateStar()
     {
@@ -137,6 +145,19 @@ public class GameController : MonoBehaviour
         }else if (currentStar == 1)
         {
             toy2.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0.5f);
+        }
+
+    }
+    public void ManageGameOverToyStar(int currentStar)
+    {
+        if (currentStar == 2)
+        {
+            gameOverToy3.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0.5f);
+        }
+        else if (currentStar == 1)
+        {
+            gameOverToy3.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0.5f);
+            gameOverToy2.GetComponent<Image>().color = new Color(255f, 255f, 255f, 0.5f);
         }
 
     }
@@ -167,7 +188,6 @@ public class GameController : MonoBehaviour
 
     private void StartGame()
     {
-        
         isPaused = false;
         DelayDisplayCanvas.SetActive(false);
         
@@ -207,6 +227,8 @@ public class GameController : MonoBehaviour
     {
         isPaused = true;
         progressbarCurrentValue = 0;
+        GameOverImage.sprite = Others.CreateSpriteFromTexture(sourceColor);
+        ManageGameOverToyStar(currentStar);
         GameOverCanvas.SetActive(true);
     }
 
@@ -233,8 +255,7 @@ public class GameController : MonoBehaviour
     {
 
         isPaused = true;
-        //InformationCanvas.GetComponent<Image>().sprite = Others.CreateSpriteFromTexture(sourceColor);
-        InformationImageImage.sprite = Others.CreateSpriteFromTexture(sourceColor);
+        InformationImage.sprite = Others.CreateSpriteFromTexture(sourceColor);
         InformationCanvas.SetActive(true);
     }
     public void OnCloseInformation()
