@@ -59,6 +59,8 @@ public class GameController : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+
+            Init();
             ReadyGamePlay();
             gameAudio = GetComponent<AudioSource>();
             progressBar.maxValue = progressbarMaxValue;
@@ -73,7 +75,17 @@ public class GameController : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
+    private void Init()
+    {
+        PauseCanvas.SetActive(false);
+        InformationCanvas.SetActive(false);
+        GameOverCanvas.SetActive(false);
+        DelayDisplayCanvas.SetActive(false);
+        PlayAgainCanvas.SetActive(false);
+        BackButtonCanvas.SetActive(false);
+    }
+
     void Update () {
         if (!isPaused)
         {
