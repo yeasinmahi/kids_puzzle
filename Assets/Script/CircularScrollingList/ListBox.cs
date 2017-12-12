@@ -113,7 +113,7 @@ public class ListBox : MonoBehaviour
 			--_slidingFramesLeft;
 			if (_slidingFramesLeft == 0) {
 				_keepSliding = false;
-				// At the last sliding frame, move to that position.
+				// At the last sliding fra me, move to that position.
 				// At free moving mode, this function is disabled.
 				if (ListPositionCtrl.Instance.alignToCenter ||
 					ListPositionCtrl.Instance.controlByButton) {

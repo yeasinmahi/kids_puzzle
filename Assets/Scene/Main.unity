@@ -625,6 +625,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf038a38935c0224995fcbf7d63f5529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMatched: 0
   isLocked: 0
   currentParrent: {fileID: 0}
 --- !u!50 &224961949
@@ -3133,6 +3134,7 @@ MonoBehaviour:
   DelayDisplayText: {fileID: 766050853}
   PlayAgainCanvas: {fileID: 1315536436}
   BackButtonCanvas: {fileID: 578184441}
+  GameOverCanvas: {fileID: 1837624510}
   sourceColor: {fileID: 2800000, guid: 16e9c8cf6ac92d646a093e89f97d7a0d, type: 3}
   sourceBlack: {fileID: 2800000, guid: 0d4d051714db34e458e3b89eb7db7742, type: 3}
   slice: 2
@@ -3144,6 +3146,7 @@ MonoBehaviour:
   blackImage1: {fileID: 2025289372}
   blackImage2: {fileID: 1158756537}
   blackImage3: {fileID: 977553026}
+  countDownTime: 1
   currentParrent: {fileID: 838522101}
   threeStarTime: 0
   twoStarTime: 0
@@ -3304,6 +3307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf038a38935c0224995fcbf7d63f5529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMatched: 0
   isLocked: 0
   currentParrent: {fileID: 0}
 --- !u!50 &950919154
@@ -5062,7 +5066,7 @@ GameObject:
   - component: {fileID: 1475288480}
   - component: {fileID: 1475288479}
   m_Layer: 5
-  m_Name: DelayDisplay
+  m_Name: DelayDisplayCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5524,6 +5528,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf038a38935c0224995fcbf7d63f5529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMatched: 0
   isLocked: 0
   currentParrent: {fileID: 0}
 --- !u!50 &1517285943
@@ -6510,6 +6515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf038a38935c0224995fcbf7d63f5529, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isMatched: 0
   isLocked: 0
   currentParrent: {fileID: 0}
 --- !u!50 &1761660224
@@ -7167,7 +7173,7 @@ GameObject:
   - component: {fileID: 1837624512}
   - component: {fileID: 1837624511}
   m_Layer: 5
-  m_Name: GameOver
+  m_Name: GameOverCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

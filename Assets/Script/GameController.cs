@@ -26,6 +26,7 @@ public class GameController : MonoBehaviour
     public Text DelayDisplayText;
     public GameObject PlayAgainCanvas;
     public GameObject BackButtonCanvas;
+    public GameObject GameOverCanvas;
 
     public Texture2D sourceColor;
     public Texture2D sourceBlack;
@@ -39,6 +40,7 @@ public class GameController : MonoBehaviour
     public GameObject blackImage2;
     public GameObject blackImage3;
 
+    public int countDownTime = 1; 
 
     public Transform currentParrent;
 
@@ -50,6 +52,7 @@ public class GameController : MonoBehaviour
     public GameObject toy2;
     public GameObject toy3;
 
+    public int matchCounter = 0;
 
 
     void Awake()
@@ -64,7 +67,7 @@ public class GameController : MonoBehaviour
             duration = maxDuration;
             threeStarTime = progressbarMaxValue / (float)1.5;
             twoStarTime = progressbarMaxValue / 2;
-            StartCoroutine(Countdown(1));
+            StartCoroutine(Countdown(countDownTime));
         }
         else if (instance != this)
         {
@@ -85,6 +88,10 @@ public class GameController : MonoBehaviour
                 progressbarCurrentValue = CalculateCurrentProgressValue();
                 currentStar = CalculateStar();
                 ManageToyStar(currentStar);
+                if (matchCounter >= 4)
+                {
+                    GameOver();
+                }
                 progressBar.value = progressbarCurrentValue;
             }
             timerDisplayText.text = Math.Round(duration, 0).ToString();
@@ -178,7 +185,9 @@ public class GameController : MonoBehaviour
     }
     private void GameOver()
     {
+        isPaused = true;
         progressbarCurrentValue = 0;
+        GameOverCanvas.SetActive(true);
     }
 
     public IEnumerator OnPauseGame()
@@ -193,7 +202,7 @@ public class GameController : MonoBehaviour
 
     public void OnResumeGame()
     {
-        StartCoroutine(Countdown(3));
+        StartCoroutine(Countdown(countDownTime));
         PauseCanvas.SetActive(false);
     }
     public void OnRestartGame()

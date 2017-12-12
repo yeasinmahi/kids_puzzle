@@ -20,7 +20,7 @@ public class ListPositionCtrl : MonoBehaviour
 		VERTICAL,
 		HORIZONTAL
 	};
-
+    ListBox CenterListBox;
 	public static ListPositionCtrl Instance;
 	/* Initial settings.
 	 *   Mode            controlByButton  alignToCenter
@@ -140,6 +140,17 @@ public class ListPositionCtrl : MonoBehaviour
 			else
 				storeFingerPosition();
 		}
+        foreach (ListBox listBox in listBoxes)
+        {
+            if(listBox == CenterListBox)
+            {
+                CenterListBox.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            }
+            else
+            {
+                listBox.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
+        }
 	}
 
 	/* Store the position of mouse when the player clicks the left mouse button.
@@ -296,7 +307,10 @@ public class ListPositionCtrl : MonoBehaviour
 			foreach (ListBox listBox in listBoxes) {
 				deltaPos = -listBox.transform.localPosition.x;
 				if (Mathf.Abs(deltaPos) < Mathf.Abs(minDeltaPos))
-					minDeltaPos = deltaPos;
+                    {
+                        minDeltaPos = deltaPos;
+                        CenterListBox = listBox;
+                    }
 			}
 
 			return new Vector3(minDeltaPos, 0.0f, 0.0f);
