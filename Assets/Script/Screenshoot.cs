@@ -31,12 +31,6 @@ public class Screenshoot : MonoBehaviour {
         }
         height = System.Convert.ToInt32(scalingFraction * rectT.rect.height);
         width = System.Convert.ToInt32(scalingFraction * rectT.rect.width);
-        Debug.Log("scaleX: " + scaleX.ToString());
-        Debug.Log("scaleY: " + scaleY.ToString());
-
-        Debug.Log("Height: "+height.ToString());
-        Debug.Log("Width: " + width.ToString());
-
     }
     //private static string ScreenshootSaveLocation;
     public static string ScreenshootImageName = "Screenshoot.png";
@@ -73,17 +67,14 @@ public class Screenshoot : MonoBehaviour {
     }
     public static void LoadImages(Image image)
     {
-        if (!Directory.Exists(GetScreenshootSaveLocation()))
-        {
-            Directory.CreateDirectory(GetScreenshootSaveLocation());
-        }
+        Others.CreateDirectory(GetScreenshootSaveLocation());
         Texture2D texture = Screenshoot.GetTexture2DScreenshoot();
         File.SetAttributes(GetScreenshootSaveLocation(), FileAttributes.Normal);
         var bytes = File.ReadAllBytes(GetScreenshootSaveLocation()+ ScreenshootImageName);
         texture.LoadImage(bytes);
         image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100);
-
     }
+
     //public static void CaptureScreenShot()
     //{
     //    Texture2D tex = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);

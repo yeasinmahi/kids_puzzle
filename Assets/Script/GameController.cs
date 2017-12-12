@@ -54,7 +54,6 @@ public class GameController : MonoBehaviour
 
     public int matchCounter = 0;
 
-
     void Awake()
     {
         if (instance == null)
