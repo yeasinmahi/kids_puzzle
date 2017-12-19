@@ -30,7 +30,6 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
             {
                 if (name.Equals(GameController.instance.dragObjectName))
                 {
-
                     if (!isMatched)
                     {
                         transform.position = currentPosition;
@@ -59,9 +58,18 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
                         }
                     }
                 }
+                else
+                {
+                    if (!isLocked)
+                    {
+                        transform.position = currentPosition;
+                    }
+                    
+                }
             }
         }
     }
+    
     public void OnDrag(PointerEventData EventData)
     {
         if (!GameController.instance.isPaused)
@@ -70,18 +78,21 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
             {
                 if (EventData.dragging)
                 {
-                    transform.position = EventData.position;
+                    if (GameController.instance.dragObjectName.Equals(gameObject.name))
+                    {
+                        transform.position = EventData.position;
+                    }
                     List<GameObject> gameObjects = EventData.hovered;
                     foreach (GameObject go in gameObjects)
                     {
                         if (go.tag.Equals("drag"))
                         {
-                            string s = go.GetComponent<Image>().sprite.name;
                             GameController.instance.dragObjectName = go.name;
-                            //Others.WriteDebugLog("debug:", go.name);
                             break;
                         }
                     }
+
+
                 }
             }
         }
@@ -106,7 +117,7 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
                 isMatched = false;
                 currentObject = null;
             }
-            
+
         }
     }
 

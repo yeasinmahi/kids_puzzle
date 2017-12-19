@@ -27,6 +27,12 @@ public class ImageManager : MonoBehaviour
     //    //return Path.Combine(Path.Combine(assetPath,"Sprites"), fileName);
     //    return assetPath + "/Sprites/" + fileName;
     //}
+    public enum ActionType
+    {
+        Move,
+        Copy,
+        Delete
+    }
     public static Texture2D LoadImageFromSprite(string fileName)
     {
         Texture2D tex = null;
@@ -42,12 +48,25 @@ public class ImageManager : MonoBehaviour
         //yield return new WaitForEndOfFrame();
 
     }
-    public static void MoveAsset(string fromLocation, string toLocation, string fileName)
+    public static void MoveAsset(string fromLocation, string toLocation, string fileName, ActionType type)
     {
+        
         if (File.Exists(fromLocation+fileName))
         {
             Others.CreateDirectory(toLocation);
-            File.Move(fromLocation + fileName, toLocation + fileName);
+            if (type.Equals(ActionType.Move))
+            {
+                File.Move(fromLocation + fileName, toLocation + fileName);
+            }
+            else if (type.Equals(ActionType.Copy))
+            {
+                File.Copy(fromLocation + fileName, toLocation + fileName);
+            }
+            else if (type.Equals(ActionType.Delete))
+            {
+                File.Delete(fromLocation + fileName);
+            }
+
         }
         //yield return new WaitForEndOfFrame();
     }

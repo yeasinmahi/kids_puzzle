@@ -140,17 +140,6 @@ public class ListPositionCtrl : MonoBehaviour
 			else
 				storeFingerPosition();
 		}
-        foreach (ListBox listBox in listBoxes)
-        {
-            if(listBox == CenterListBox)
-            {
-                CenterListBox.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
-            }
-            else
-            {
-                listBox.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
-            }
-        }
 	}
 
 	/* Store the position of mouse when the player clicks the left mouse button.
@@ -283,7 +272,18 @@ public class ListPositionCtrl : MonoBehaviour
 			listbox.setSlidingDistance(deltaPos, slidingFrames / 2);
 
 		needToAlignToCenter = false;
-	}
+        foreach (ListBox listBox in listBoxes)
+        {
+            if (listBox == CenterListBox)
+            {
+                listBox.GetComponent<Image>().color = new Color32(255, 255, 255, 255);
+            }
+            else
+            {
+                listBox.GetComponent<Image>().color = new Color32(100, 100, 100, 255);
+            }
+        }
+    }
 
 	/* Find the listBox which is the closest to the center position,
 	 * And calculate the delta position of x or y between them.

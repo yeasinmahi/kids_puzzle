@@ -61,7 +61,7 @@ public class InsideWorldController : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        if(startDrag == true)
+        if(startDrag == true && AudioListener.pause == false)
         {
             AudioSource.PlayOneShot(scrollingSound, 0.7F);
         }

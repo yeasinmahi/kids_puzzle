@@ -56,7 +56,7 @@ public class HomeController : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        if (isMoved == true)
+        if (isMoved == true && AudioListener.pause == false)
         {
             AudioSource.PlayOneShot(scrollingSound, 0.7F);
         }

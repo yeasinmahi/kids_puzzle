@@ -30,6 +30,9 @@ public class GameController : MonoBehaviour
     public GameObject BackButtonCanvas;
     public GameObject GameOverCanvas;
     public Image GameOverImage;
+    public Button MuteButton;
+    public Sprite mike;
+    public Sprite mike_disable;
 
     public Texture2D sourceColor;
     public Texture2D sourceBlack;
@@ -63,6 +66,7 @@ public class GameController : MonoBehaviour
     public string gameImageSourceColor = "5";
     public string gameImageSourceBlack = "5.b";
     public int matchCounter = 0;
+    
 
     void Awake()
     {
@@ -83,6 +87,14 @@ public class GameController : MonoBehaviour
         else if (instance != this)
         {
             Destroy(gameObject);
+        }
+        if (AudioListener.pause == true)
+        {
+            MuteButton.image.sprite = mike_disable;
+        }
+        else
+        {
+            MuteButton.image.sprite = mike;
         }
     }
 
@@ -120,10 +132,25 @@ public class GameController : MonoBehaviour
             }
             timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
-        if (onDrag == true)
+        if (onDrag == true && AudioListener.pause == false)
         {
             gameAudio.PlayOneShot(scrollingSound, 0.7F);
         }
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+    }
+    public void MuteAudio()
+    {
+        if (AudioListener.pause == true)
+        {
+            AudioListener.pause = false;
+            MuteButton.image.sprite = mike;
+            return;
+        }
+        AudioListener.pause = true;
+        MuteButton.image.sprite = mike_disable;
     }
     public int CalculateStar()
     {
@@ -226,7 +253,6 @@ public class GameController : MonoBehaviour
     private void GameOver()
     {
         isPaused = true;
-        progressbarCurrentValue = 0;
         GameOverImage.sprite = Others.CreateSpriteFromTexture(sourceColor);
         ManageGameOverToyStar(currentStar);
         GameOverCanvas.SetActive(true);
@@ -292,20 +318,23 @@ public class GameController : MonoBehaviour
     }
     public void PlaySound(Others.MyAudioType audioType)
     {
-        if (audioType.Equals(Others.MyAudioType.Matching))
+        if (audioType.Equals(Others.MyAudioType.Matching) && AudioListener.pause == false)
         {
             gameAudio.PlayOneShot(matchingSound);
-        }else if (audioType.Equals(Others.MyAudioType.Mismatching))
+        }else if (audioType.Equals(Others.MyAudioType.Mismatching) && AudioListener.pause == false)
         {
             gameAudio.PlayOneShot(mismatchingSound);
         }
     }
     public void SaveImageToGallery()
     {
-        ImageManager.SaveImage(sourceColor, ImageManager.GetImageSaveLocation(),ImageManager.fileName);
-        ImageManager.MoveAsset(ImageManager.GetImageSaveLocation(), ImageManager.externalFolderLocation, ImageManager.fileName);
+        SaveIamgeToDefaultPath();
+        ImageManager.MoveAsset(ImageManager.GetImageSaveLocation(), ImageManager.externalFolderLocation, ImageManager.fileName,ImageManager.ActionType.Move);
     }
-
+    public void SaveIamgeToDefaultPath()
+    {
+        ImageManager.SaveImage(sourceColor, ImageManager.GetImageSaveLocation(), ImageManager.fileName);
+    }
 
     //public void OnDrag(PointerEventData EventData)
     //{
