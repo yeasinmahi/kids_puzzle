@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class MySceneManager : MonoBehaviour {
 
-    public GameObject gameObject;
-	public void LoadScene(string sceneName)
+    public static new GameObject gameObject;
+	public static void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
@@ -59,7 +59,7 @@ public class MySceneManager : MonoBehaviour {
     {
         GameController.instance.SaveImageToGallery();
     }
-    public void LoadInsideWorld()
+    public static void LoadInsideWorld()
     {
         if (!HomeController.instance.isMoved)
         {

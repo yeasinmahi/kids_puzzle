@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class HomeController : MonoBehaviour {
@@ -63,11 +64,21 @@ public class HomeController : MonoBehaviour {
         GameObject go = Instantiate(prefab, pos, Quaternion.identity);
         go.transform.SetParent(listBank.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
+        go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(world.WorldImage);
+        go.GetComponent<Button>().onClick.AddListener(delegate { WorldOnClick(world.Sl); });
         ListBox listBox = go.GetComponent<ListBox>();
         listBox.listBoxID = counter;
         listBox.content.text = world.WorldName;
+
         AddWorld(listBox);
     }
+
+    private void WorldOnClick(int worldId)
+    {
+        Others.worldId = worldId;
+        MySceneManager.LoadInsideWorld();
+    }
+
     private int counter = 0;
     public void AddWorld(ListBox listBox)
     {

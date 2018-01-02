@@ -40,13 +40,17 @@ public class ImageManager : MonoBehaviour
     //    image.sprite = Sprite.Create(texture: texture, rect: new Rect(0, 0, 128, 128), pivot: new Vector2());
     //    return image;
     //}
-    
 
-    public static Texture2D LoadImageFromSprite(string fileName)
+
+    public static Sprite LoadSpriteFromResource(string imageName)
     {
-        Texture2D tex = null;
-        tex = Resources.Load(fileName) as Texture2D;
-        return tex;
+        Texture2D texture = LoadTexureFromResource(imageName);
+        Sprite sprite = Sprite.Create(texture: texture, rect: new Rect(0, 0, texture.width, texture.height), pivot: new Vector2());
+        return sprite;
+    }
+    public static Texture2D LoadTexureFromResource(string fileName)
+    {
+        return Resources.Load(fileName) as Texture2D;
     }
     public static void SaveImage(Texture2D texture, string fileLocation, string fileName)
     {

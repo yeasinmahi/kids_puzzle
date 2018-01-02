@@ -16,12 +16,14 @@ public class InsideWorldController : MonoBehaviour {
     public bool isDraged = false;
     public GameObject image;
     public GameObject hoveredImage;
+    public int worldId;
 
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            worldId = Others.worldId;
             AudioSource = GetComponent<AudioSource>();
             PlayBackgroundSound();
         }

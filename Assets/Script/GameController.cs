@@ -107,8 +107,8 @@ public class GameController : MonoBehaviour
         PlayAgainCanvas.SetActive(false);
         BackButtonCanvas.SetActive(false);
 
-        sourceColor = ImageManager.LoadImageFromSprite(gameImageSourceColor);
-        sourceBlack = ImageManager.LoadImageFromSprite(gameImageSourceBlack);
+        sourceColor = ImageManager.LoadTexureFromResource(gameImageSourceColor);
+        sourceBlack = ImageManager.LoadTexureFromResource(gameImageSourceBlack);
     }
 
     void Update () {

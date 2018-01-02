@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Others : MonoBehaviour
 {
+    public static int worldId = 0;
     public enum MyAudioType
     {
         Matching,
