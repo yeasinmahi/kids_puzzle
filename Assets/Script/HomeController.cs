@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 public class HomeController : MonoBehaviour {
 
@@ -10,7 +11,8 @@ public class HomeController : MonoBehaviour {
     public Button MuteButton;
     public Sprite mike;
     public Sprite mike_disable;
-
+    public GameObject listBank;
+    public GameObject prefab;
     void Awake()
     {
         if (instance == null)
@@ -18,6 +20,9 @@ public class HomeController : MonoBehaviour {
             instance = this;
             AudioSource = GetComponent<AudioSource>();
             PlayBackgroundSound();
+            List<World> worlds = SqliteManager.GetWorld();
+            ListPositionCtrl.Instance.listBoxes = new ListBox[worlds.Count];
+            CreateWorlds(worlds);
         }
 
         else if (instance != this)
@@ -41,7 +46,34 @@ public class HomeController : MonoBehaviour {
         AudioSource.loop = true;
         AudioSource.Play();
     }
+    public void CreateWorlds(List<World> worlds)
+    {
+        foreach(World world in worlds)
+        {
+            CreateWorld(world);
+        }
+        
+        //image.sprite = ImageManager.LoadImageFromTexure2D(ImageManager.LoadImageFromSprite("1.jpg")).sprite;
 
+    }
+    
+    public void CreateWorld(World world)
+    {
+        Vector3 pos = new Vector3(0, 0, 0);
+        GameObject go = Instantiate(prefab, pos, Quaternion.identity);
+        go.transform.SetParent(listBank.transform);
+        go.transform.localScale = new Vector3(1, 1, 1);
+        ListBox listBox = go.GetComponent<ListBox>();
+        listBox.listBoxID = counter;
+        listBox.content.text = world.WorldName;
+        AddWorld(listBox);
+    }
+    private int counter = 0;
+    public void AddWorld(ListBox listBox)
+    {
+        ListPositionCtrl.Instance.listBoxes[counter] = listBox;
+        counter++;
+    }
     public void MuteAudio()
     {
         if (AudioListener.pause==true)

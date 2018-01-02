@@ -34,7 +34,7 @@ public class LoadingScreenContoller : MonoBehaviour {
         else
         {
             duration -= Time.deltaTime;
-            progressBar.value = (1 / totalTime * duration);
+            progressBar.value = (progressbarMaxValue / totalTime * duration);
         }
 	}
 }

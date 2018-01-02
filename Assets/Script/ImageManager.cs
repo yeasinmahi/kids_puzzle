@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class ImageManager : MonoBehaviour
     }
     //public static string getFullPathOfSprite(string fileName)
     //{
-        
+
     //    assetPath = Application.dataPath;
     //    //return Path.Combine(Path.Combine(assetPath,"Sprites"), fileName);
     //    return assetPath + "/Sprites/" + fileName;
@@ -33,6 +34,14 @@ public class ImageManager : MonoBehaviour
         Copy,
         Delete
     }
+    //public static Image LoadImageFromTexure2D(Texture2D texture)
+    //{
+    //    Image image = Instantiate(image,new Vector3(0,0,0), Quaternion.identity) as Image;
+    //    image.sprite = Sprite.Create(texture: texture, rect: new Rect(0, 0, 128, 128), pivot: new Vector2());
+    //    return image;
+    //}
+    
+
     public static Texture2D LoadImageFromSprite(string fileName)
     {
         Texture2D tex = null;
@@ -50,8 +59,8 @@ public class ImageManager : MonoBehaviour
     }
     public static void MoveAsset(string fromLocation, string toLocation, string fileName, ActionType type)
     {
-        
-        if (File.Exists(fromLocation+fileName))
+
+        if (File.Exists(fromLocation + fileName))
         {
             Others.CreateDirectory(toLocation);
             if (type.Equals(ActionType.Move))
