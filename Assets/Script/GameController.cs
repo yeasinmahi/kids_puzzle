@@ -29,6 +29,7 @@ public class GameController : MonoBehaviour
     public GameObject PlayAgainCanvas;
     public GameObject BackButtonCanvas;
     public GameObject GameOverCanvas;
+    public GameObject ErrorCanvas;
     public Image GameOverImage;
     public Button MuteButton;
     public Sprite mike;
@@ -66,8 +67,9 @@ public class GameController : MonoBehaviour
     public string gameImageSourceColor = "5";
     public string gameImageSourceBlack = "5.b";
     public int matchCounter = 0;
-    
 
+    InsideWorld insideWorld = null;
+    public bool isGameDataReady = false;
     void Awake()
     {
         if (instance == null)
@@ -75,14 +77,18 @@ public class GameController : MonoBehaviour
             instance = this;
 
             Init();
-            ReadyGamePlay();
-            gameAudio = GetComponent<AudioSource>();
-            progressBar.maxValue = progressbarMaxValue;
-            progressBar.value = progressbarMaxValue;
-            duration = maxDuration;
-            threeStarTime = progressbarMaxValue / 1.5f;
-            twoStarTime = progressbarMaxValue / 2;
-            StartCoroutine(Countdown(countDownTime));
+            if (isGameDataReady)
+            {
+                ReadyGamePlay();
+                gameAudio = GetComponent<AudioSource>();
+                progressBar.maxValue = progressbarMaxValue;
+                progressBar.value = progressbarMaxValue;
+                duration = maxDuration;
+                threeStarTime = progressbarMaxValue / 1.5f;
+                twoStarTime = progressbarMaxValue / 2;
+                StartCoroutine(Countdown(countDownTime));
+            }
+            
         }
         else if (instance != this)
         {
@@ -106,31 +112,54 @@ public class GameController : MonoBehaviour
         DelayDisplayCanvas.SetActive(false);
         PlayAgainCanvas.SetActive(false);
         BackButtonCanvas.SetActive(false);
-
-        sourceColor = ImageManager.LoadTexureFromResource(gameImageSourceColor);
-        sourceBlack = ImageManager.LoadTexureFromResource(gameImageSourceBlack);
+        if (Others.insideWorldId > 0)
+        {
+            insideWorld = SqliteManager.GetInsideWorld(Others.insideWorldId);
+            if (insideWorld != null)
+            {
+                sourceColor = ImageManager.LoadTexureFromResource(insideWorld.ColorImage);
+                sourceBlack = ImageManager.LoadTexureFromResource(insideWorld.BWImage);
+                isGameDataReady = true;
+                ErrorCanvas.SetActive(false);
+            }
+            else
+            {
+                isGameDataReady = false;
+                ErrorCanvas.SetActive(true);
+            }
+        }
+        else
+        {
+            isGameDataReady = false;
+            ErrorCanvas.SetActive(true);
+        }
+        
+        
     }
 
     void Update () {
         if (!isPaused)
         {
-            if (duration <= 0.0f)
+            if (isGameDataReady)
             {
-                TimeEnd();
-            }
-            else
-            {
-                duration -= Time.deltaTime;
-                progressbarCurrentValue = CalculateCurrentProgressValue();
-                currentStar = CalculateStar();
-                ManageToyStar(currentStar);
-                if (matchCounter >= 4)
+                if (duration <= 0.0f)
                 {
-                    GameOver();
+                    TimeEnd();
                 }
-                progressBar.value = progressbarCurrentValue;
+                else
+                {
+                    duration -= Time.deltaTime;
+                    progressbarCurrentValue = CalculateCurrentProgressValue();
+                    currentStar = CalculateStar();
+                    ManageToyStar(currentStar);
+                    if (matchCounter >= 4)
+                    {
+                        GameOver();
+                    }
+                    progressBar.value = progressbarCurrentValue;
+                }
+                timerDisplayText.text = Math.Round(duration, 0).ToString();
             }
-            timerDisplayText.text = Math.Round(duration, 0).ToString();
         }
         if (onDrag == true && AudioListener.pause == false)
         {
@@ -288,6 +317,16 @@ public class GameController : MonoBehaviour
     {
         isPaused = false;
         InformationCanvas.SetActive(false);
+    }
+    public void OnActiveError()
+    {
+        isPaused = true;
+        ErrorCanvas.SetActive(true);
+    }
+    public void OnCloseError()
+    {
+        isPaused = false;
+        ErrorCanvas.SetActive(false);
     }
     float CalculateCurrentProgressValue()
     {

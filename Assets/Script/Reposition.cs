@@ -26,47 +26,51 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     {
         if (!GameController.instance.isPaused)
         {
-            if (Input.GetMouseButtonUp(0))
+            if (GameController.instance.isGameDataReady)
             {
-                if (name.Equals(GameController.instance.dragObjectName))
+                if (Input.GetMouseButtonUp(0))
                 {
-                    if (!isMatched)
+                    if (name.Equals(GameController.instance.dragObjectName))
                     {
-                        transform.position = currentPosition;
-                        if (HomeController.instance != null)
+                        if (!isMatched)
                         {
-                            HomeController.instance.AudioSource.volume = 0.5f;
+                            transform.position = currentPosition;
+                            if (HomeController.instance != null)
+                            {
+                                HomeController.instance.AudioSource.volume = 0.5f;
+                            }
+                            GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
                         }
-                        GameController.instance.PlaySound(Others.MyAudioType.Mismatching);
+                        else
+                        {
+                            if (currentObject != null)
+                            {
+                                if (currentObject.activeSelf)
+                                {
+                                    transform.position = obJectPosition;
+                                    if (HomeController.instance != null)
+                                    {
+                                        HomeController.instance.AudioSource.volume = 0.5f;
+                                    }
+                                    isLocked = true;
+                                    GameController.instance.PlaySound(Others.MyAudioType.Matching);
+                                    GameController.instance.matchCounter++;
+                                }
+                                currentObject.SetActive(false);
+                            }
+                        }
                     }
                     else
                     {
-                        if (currentObject != null)
+                        if (!isLocked)
                         {
-                            if (currentObject.activeSelf)
-                            {
-                                transform.position = obJectPosition;
-                                if (HomeController.instance != null)
-                                {
-                                    HomeController.instance.AudioSource.volume = 0.5f;
-                                }
-                                isLocked = true;
-                                GameController.instance.PlaySound(Others.MyAudioType.Matching);
-                                GameController.instance.matchCounter++;
-                            }
-                            currentObject.SetActive(false);
+                            transform.position = currentPosition;
                         }
+
                     }
-                }
-                else
-                {
-                    if (!isLocked)
-                    {
-                        transform.position = currentPosition;
-                    }
-                    
                 }
             }
+            
         }
     }
     
@@ -74,25 +78,26 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     {
         if (!GameController.instance.isPaused)
         {
-            if (!isLocked)
+            if (GameController.instance.isGameDataReady)
             {
-                if (EventData.dragging)
+                if (!isLocked)
                 {
-                    if (GameController.instance.dragObjectName.Equals(gameObject.name))
+                    if (EventData.dragging)
                     {
-                        transform.position = EventData.position;
-                    }
-                    List<GameObject> gameObjects = EventData.hovered;
-                    foreach (GameObject go in gameObjects)
-                    {
-                        if (go.tag.Equals("drag"))
+                        if (GameController.instance.dragObjectName.Equals(gameObject.name))
                         {
-                            GameController.instance.dragObjectName = go.name;
-                            break;
+                            transform.position = EventData.position;
+                        }
+                        List<GameObject> gameObjects = EventData.hovered;
+                        foreach (GameObject go in gameObjects)
+                        {
+                            if (go.tag.Equals("drag"))
+                            {
+                                GameController.instance.dragObjectName = go.name;
+                                break;
+                            }
                         }
                     }
-
-
                 }
             }
         }
@@ -126,13 +131,16 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     {
         if (!isLocked)
         {
-            GameController.instance.onDrag = false;
-            List<GameObject> gameObjects = eventData.hovered;
-            foreach (GameObject go in gameObjects)
+            if (GameController.instance.isGameDataReady)
             {
-                if (go.tag.Equals("drag"))
+                GameController.instance.onDrag = false;
+                List<GameObject> gameObjects = eventData.hovered;
+                foreach (GameObject go in gameObjects)
                 {
-                    go.transform.parent = currentParrent;
+                    if (go.tag.Equals("drag"))
+                    {
+                        go.transform.parent = currentParrent;
+                    }
                 }
             }
         }
@@ -142,8 +150,11 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
     {
         if (!isLocked)
         {
-            GameController.instance.onDrag = true;
-            transform.parent = GameController.instance.forgroundCanvas.transform;
+            if (GameController.instance.isGameDataReady)
+            {
+                GameController.instance.onDrag = true;
+                transform.parent = GameController.instance.forgroundCanvas.transform;
+            }
         }
     }
 }

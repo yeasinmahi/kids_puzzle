@@ -21,9 +21,10 @@ public class HomeController : MonoBehaviour {
             instance = this;
             AudioSource = GetComponent<AudioSource>();
             PlayBackgroundSound();
-            List<World> worlds = SqliteManager.GetWorld();
+            List<World> worlds = SqliteManager.GetWorlds();
             ListPositionCtrl.Instance.listBoxes = new ListBox[worlds.Count];
             CreateWorlds(worlds);
+            SetContentId(worlds);
         }
 
         else if (instance != this)
@@ -57,18 +58,42 @@ public class HomeController : MonoBehaviour {
         //image.sprite = ImageManager.LoadImageFromTexure2D(ImageManager.LoadImageFromSprite("1.jpg")).sprite;
 
     }
-    
+    public void SetContentId(List<World> worlds)
+    {
+        int cnt = 0;
+        foreach(World world in worlds)
+        {
+            
+            if (cnt <= 0)
+            {
+                ListPositionCtrl.Instance.listBoxes[cnt].nextListBox = ListPositionCtrl.Instance.listBoxes[cnt + 1];
+                ListPositionCtrl.Instance.listBoxes[cnt].lastListBox = ListPositionCtrl.Instance.listBoxes[worlds.Count - 1];
+            }
+            else if (cnt >= worlds.Count - 1)
+            {
+                ListPositionCtrl.Instance.listBoxes[cnt].nextListBox = ListPositionCtrl.Instance.listBoxes[0];
+                ListPositionCtrl.Instance.listBoxes[cnt].lastListBox = ListPositionCtrl.Instance.listBoxes[cnt - 1];
+            }
+            else
+            {
+                ListPositionCtrl.Instance.listBoxes[cnt].nextListBox = ListPositionCtrl.Instance.listBoxes[cnt + 1];
+                ListPositionCtrl.Instance.listBoxes[cnt].lastListBox = ListPositionCtrl.Instance.listBoxes[cnt - 1];
+            }
+            cnt++;
+        }
+        
+    }
     public void CreateWorld(World world)
     {
         Vector3 pos = new Vector3(0, 0, 0);
         GameObject go = Instantiate(prefab, pos, Quaternion.identity);
         go.transform.SetParent(listBank.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
-        go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(world.WorldImage);
+        go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(world.Image);
         go.GetComponent<Button>().onClick.AddListener(delegate { WorldOnClick(world.Sl); });
         ListBox listBox = go.GetComponent<ListBox>();
         listBox.listBoxID = counter;
-        listBox.content.text = world.WorldName;
+        listBox.content.text = world.Name;
 
         AddWorld(listBox);
     }

@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class MySceneManager : MonoBehaviour {
 
-    public static new GameObject gameObject;
-	public static void LoadScene(string sceneName)
+    public new GameObject gameObject;
+	public void LoadScene(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
@@ -46,6 +46,14 @@ public class MySceneManager : MonoBehaviour {
     {
         gameObject.SendMessage("OnCloseInformation", SendMessageOptions.DontRequireReceiver);
     }
+    public void ActiveErrorModal()
+    {
+        gameObject.SendMessage("OnActiveError", SendMessageOptions.DontRequireReceiver);
+    }
+    public void CloseErrorModal()
+    {
+        gameObject.SendMessage("OnCloseError", SendMessageOptions.DontRequireReceiver);
+    }
     public void ScreenShootAndLoad()
     {
         Screenshoot.takeScreenShot();
@@ -63,7 +71,7 @@ public class MySceneManager : MonoBehaviour {
     {
         if (!HomeController.instance.isMoved)
         {
-            LoadScene("InsideWorld");
+            SceneManager.LoadScene("InsideWorld");
         }
     }
 

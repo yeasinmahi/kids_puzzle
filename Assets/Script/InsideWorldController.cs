@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.EventSystems;
+﻿using System;
+using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UI.Extensions;
 
 public class InsideWorldController : MonoBehaviour {
 
@@ -17,6 +17,9 @@ public class InsideWorldController : MonoBehaviour {
     public GameObject image;
     public GameObject hoveredImage;
     public int worldId;
+    public GameObject prefab;
+    public GameObject itemParent;
+    private bool isShowImage = false;
 
     void Awake()
     {
@@ -24,6 +27,10 @@ public class InsideWorldController : MonoBehaviour {
         {
             instance = this;
             worldId = Others.worldId;
+            if (worldId>0)
+            {
+                LoadInsideWorld();
+            }
             AudioSource = GetComponent<AudioSource>();
             PlayBackgroundSound();
         }
@@ -41,6 +48,35 @@ public class InsideWorldController : MonoBehaviour {
             MuteButton.image.sprite = mike;
         }
     }
+
+    private void LoadInsideWorld()
+    {
+        List<InsideWorld> insideWorlds = SqliteManager.GetInsideWorlds(worldId);
+        foreach(InsideWorld insideWorld in insideWorlds)
+        {
+            CreateLavel(insideWorld);
+        }
+    }
+
+    private void CreateLavel(InsideWorld insideWorld)
+    {
+        Vector3 pos = new Vector3(0, 0, 0);
+        GameObject go = Instantiate(prefab, pos, Quaternion.identity);
+        go.transform.SetParent(itemParent.transform);
+        go.transform.localScale = new Vector3(1, 1, 1);
+        go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(insideWorld.ColorImage);
+        go.GetComponent<ChangeItemImage>().insideWorldId = insideWorld.Sl;
+        if (insideWorld.IsComplete.Equals(0))
+        {
+            if (!isShowImage)
+            {
+                isShowImage = true;
+                image.GetComponent<Image>().sprite = go.GetComponent<Image>().sprite;
+                Others.insideWorldId = insideWorld.Sl;
+            }
+        }
+    }
+
     public void PlayBackgroundSound()
     {
         AudioSource.clip = backgroundSound;
@@ -77,7 +113,11 @@ public class InsideWorldController : MonoBehaviour {
         {
             if (!isDraged)
             {
-                image.GetComponent<Image>().sprite = hoveredImage.GetComponent<Image>().sprite;
+                if (hoveredImage != null)
+                {
+                    image.GetComponent<Image>().sprite = hoveredImage.GetComponent<Image>().sprite;
+                    Others.insideWorldId = hoveredImage.GetComponent<ChangeItemImage>().insideWorldId;
+                }
             }
             isDraged = false;
         }
