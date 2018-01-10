@@ -284,6 +284,12 @@ public class GameController : MonoBehaviour
         isPaused = true;
         GameOverImage.sprite = Others.CreateSpriteFromTexture(sourceColor);
         ManageGameOverToyStar(currentStar);
+        int achievedToy = SqliteManager.GetAchievedToy(Others.insideWorldId);
+        
+        if ( achievedToy > 0 && currentStar > achievedToy)
+        {
+            SqliteManager.UpdateIsCompleteAndToyIntoInsideWorld(Others.insideWorldId, 1, currentStar);
+        }
         GameOverCanvas.SetActive(true);
     }
 

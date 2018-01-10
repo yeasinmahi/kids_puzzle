@@ -19,8 +19,8 @@ public class LoadingScreenContoller : MonoBehaviour {
             instance = this;
             duration = totalTime;
             progressbarMaxValue = progressBar.maxValue;
-            Texture2D graph = ImageManager.LoadTexureFromResource("0");
-            ImageManager.ConvertToGrayscale(graph);
+            //Texture2D graph = ImageManager.LoadTexureFromResource("0");
+            //ImageManager.ConvertToGrayscale(graph);
         }
         else if (instance != this)
         {

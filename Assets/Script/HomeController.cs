@@ -90,7 +90,17 @@ public class HomeController : MonoBehaviour {
         go.transform.SetParent(listBank.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
         go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(world.Image);
-        go.GetComponent<Button>().onClick.AddListener(delegate { WorldOnClick(world.Sl); });
+        go.GetComponent<Button>().onClick.AddListener(delegate { WorldOnClick(go); });
+        go.GetComponent<ChangeItemImage>().sl = world.Sl;
+        int achivedToy = SqliteManager.GetTotalAchivedToy(world.Sl);
+        if (achivedToy >= world.TargetedToy)
+        {
+            go.GetComponent<ChangeItemImage>().isLock = false;
+        }
+        else
+        {
+            go.GetComponent<ChangeItemImage>().isLock = true;
+        }
         ListBox listBox = go.GetComponent<ListBox>();
         listBox.listBoxID = counter;
         listBox.content.text = world.Name;
@@ -98,10 +108,14 @@ public class HomeController : MonoBehaviour {
         AddWorld(listBox);
     }
 
-    private void WorldOnClick(int worldId)
+    private void WorldOnClick(GameObject worldGameObject)
     {
-        Others.worldId = worldId;
-        MySceneManager.LoadInsideWorld();
+        if (!worldGameObject.GetComponent<ChangeItemImage>().isLock)
+        {
+            Others.worldId = worldGameObject.GetComponent<ChangeItemImage>().sl;
+            MySceneManager.LoadInsideWorld();
+        }
+        
     }
 
     private int counter = 0;

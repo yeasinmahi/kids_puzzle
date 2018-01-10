@@ -65,16 +65,31 @@ public class InsideWorldController : MonoBehaviour {
         go.transform.SetParent(itemParent.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
         go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(insideWorld.ColorImage);
-        go.GetComponent<ChangeItemImage>().insideWorldId = insideWorld.Sl;
+        go.GetComponent<ChangeItemImage>().sl = insideWorld.Sl;
         if (insideWorld.IsComplete.Equals(0))
         {
             if (!isShowImage)
             {
-                isShowImage = true;
                 image.GetComponent<Image>().sprite = go.GetComponent<Image>().sprite;
                 Others.insideWorldId = insideWorld.Sl;
+                //go.GetComponentInChildren<Button>().gameObject.SetActive(false);
+                go.GetComponent<ChangeItemImage>().isLock = false;
+                isShowImage = true;
+            }
+            else
+            {
+                go.GetComponent<ChangeItemImage>().isLock = true;
+                //go.GetComponentInChildren<Button>().gameObject.SetActive(true);
             }
         }
+        else if (insideWorld.IsComplete.Equals(1))
+        {
+            go.GetComponent<ChangeItemImage>().achivedToy = insideWorld.AchievedToy; 
+            go.GetComponent<ChangeItemImage>().isLock = false;
+            
+            //go.GetComponentInChildren<Button>().gameObject.SetActive(false);
+        }
+
     }
 
     public void PlayBackgroundSound()
@@ -116,7 +131,7 @@ public class InsideWorldController : MonoBehaviour {
                 if (hoveredImage != null)
                 {
                     image.GetComponent<Image>().sprite = hoveredImage.GetComponent<Image>().sprite;
-                    Others.insideWorldId = hoveredImage.GetComponent<ChangeItemImage>().insideWorldId;
+                    Others.insideWorldId = hoveredImage.GetComponent<ChangeItemImage>().sl;
                 }
             }
             isDraged = false;

@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 569007140}
   - component: {fileID: 569007139}
   - component: {fileID: 569007143}
-  - component: {fileID: 569007144}
+  - component: {fileID: 569007146}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -277,7 +277,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   splashImage: {fileID: 213337310}
   loadLevel: Loading Screen
---- !u!114 &569007144
+--- !u!114 &569007146
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -285,7 +285,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 569007138}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d999e37c31a8f55448a3dbaaf63d1a9c, type: 3}
+  m_Script: {fileID: 11500000, guid: a2af295049ef0774d80197bb86cf0ffc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1595185303

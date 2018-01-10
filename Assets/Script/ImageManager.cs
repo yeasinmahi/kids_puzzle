@@ -88,8 +88,9 @@ public class ImageManager : MonoBehaviour
         return Application.persistentDataPath + "/Resources/";
     }
 
-    public static void ConvertToGrayscale(Texture2D graph)
+    public static Texture2D ConvertToGrayscale(Texture2D graph)
     {
+        Texture2D tex = new Texture2D(400, 300);
         Color32[] pixels = graph.GetPixels32();
         for (int x = 0; x < graph.width; x++)
         {
@@ -109,7 +110,9 @@ public class ImageManager : MonoBehaviour
         }
         graph.Apply(false);
         var bytes = graph.EncodeToPNG();
-        ImageManager.SaveImage(graph, ImageManager.GetImageSaveLocation(), "ImageSaveTest.png");
+        tex.LoadImage(bytes);
+        return tex as Texture2D;
+        //ImageManager.SaveImage(graph, ImageManager.GetImageSaveLocation(), "ImageSaveTest.png");
         //System.IO.File.WriteAllBytes(Application.dataPath + "ImageSaveTest.png", bytes);
     }
 }
