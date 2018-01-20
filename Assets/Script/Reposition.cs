@@ -139,7 +139,7 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
                 {
                     if (go.tag.Equals("drag"))
                     {
-                        go.transform.parent = currentParrent;
+                        go.transform.SetParent(currentParrent);
                     }
                 }
             }
@@ -153,7 +153,7 @@ public class Reposition : MonoBehaviour, IDragHandler, IEndDragHandler, IBeginDr
             if (GameController.instance.isGameDataReady)
             {
                 GameController.instance.onDrag = true;
-                transform.parent = GameController.instance.forgroundCanvas.transform;
+                transform.SetParent(GameController.instance.forgroundCanvas.transform);
             }
         }
     }

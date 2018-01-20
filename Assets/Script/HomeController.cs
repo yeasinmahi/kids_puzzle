@@ -42,12 +42,7 @@ public class HomeController : MonoBehaviour {
         //DontDestroyOnLoad(gameObject);
     }
 
-    public void PlayBackgroundSound()
-    {
-        AudioSource.clip = backgroundSound;
-        AudioSource.loop = true;
-        AudioSource.Play();
-    }
+   
     public void CreateWorlds(List<World> worlds)
     {
         foreach(World world in worlds)
@@ -63,7 +58,6 @@ public class HomeController : MonoBehaviour {
         int cnt = 0;
         foreach(World world in worlds)
         {
-            
             if (cnt <= 0)
             {
                 ListPositionCtrl.Instance.listBoxes[cnt].nextListBox = ListPositionCtrl.Instance.listBoxes[cnt + 1];
@@ -85,11 +79,13 @@ public class HomeController : MonoBehaviour {
     }
     public void CreateWorld(World world)
     {
+        Others.WriteLogInText("Create world start" + world.Sl);
         Vector3 pos = new Vector3(0, 0, 0);
         GameObject go = Instantiate(prefab, pos, Quaternion.identity);
+        Others.WriteLogInText("instantiate prefabs" + world.Sl);
         go.transform.SetParent(listBank.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
-        go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(world.Image);
+        ImageManager.LoadSpriteFromResource(world.Image, go.GetComponent<Image>().sprite);
         go.GetComponent<Button>().onClick.AddListener(delegate { WorldOnClick(go); });
         go.GetComponent<ChangeItemImage>().sl = world.Sl;
         int achivedToy = SqliteManager.GetTotalAchivedToy(world.Sl);
@@ -106,6 +102,7 @@ public class HomeController : MonoBehaviour {
         listBox.content.text = world.Name;
 
         AddWorld(listBox);
+        Others.WriteLogInText("Complete World" + world.Sl);
     }
 
     private void WorldOnClick(GameObject worldGameObject)
@@ -123,6 +120,12 @@ public class HomeController : MonoBehaviour {
     {
         ListPositionCtrl.Instance.listBoxes[counter] = listBox;
         counter++;
+    }
+    public void PlayBackgroundSound()
+    {
+        AudioSource.clip = backgroundSound;
+        AudioSource.loop = true;
+        AudioSource.Play();
     }
     public void MuteAudio()
     {

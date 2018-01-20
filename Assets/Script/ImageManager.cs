@@ -42,15 +42,47 @@ public class ImageManager : MonoBehaviour
     //}
 
 
-    public static Sprite LoadSpriteFromResource(string imageName)
+    public static IEnumerator LoadSpriteFromResource(string imageName, Sprite sprite)
     {
-        Texture2D texture = LoadTexureFromResource(imageName);
-        Sprite sprite = Sprite.Create(texture: texture, rect: new Rect(0, 0, texture.width, texture.height), pivot: new Vector2());
-        return sprite;
+        WWW www = new WWW("file://" + System.IO.Path.Combine(Application.streamingAssetsPath, fileName));
+        Texture2D texture;
+        while (!www.isDone)
+        {
+            yield return null;
+        }
+
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.Log(www.error);
+            yield break;
+        }
+        else
+        {
+            texture = www.texture;
+            sprite = Sprite.Create(texture as Texture2D, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
+        }
+
+        yield return 0;
     }
-    public static Texture2D LoadTexureFromResource(string fileName)
+    public static IEnumerator LoadTextureFromResource(string imageName, Texture texture)
     {
-        return Resources.Load(fileName) as Texture2D;
+        WWW www = new WWW("file://" + System.IO.Path.Combine(Application.streamingAssetsPath, fileName));
+        while (!www.isDone)
+        {
+            yield return null;
+        }
+
+        if (!string.IsNullOrEmpty(www.error))
+        {
+            Debug.Log(www.error);
+            yield break;
+        }
+        else
+        {
+            texture = www.texture;
+        }
+
+        yield return 0;
     }
     public static void SaveImage(Texture2D texture, string fileLocation, string fileName)
     {
@@ -85,7 +117,9 @@ public class ImageManager : MonoBehaviour
     }
     public static string GetImageSaveLocation()
     {
-        return Application.persistentDataPath + "/Resources/";
+        //return Application.persistentDataPath + "/Resources/";
+        Others.CreateDirectory(Others.GetStreamingAssetsPath());
+        return Others.GetStreamingAssetsPath();
     }
 
     public static Texture2D ConvertToGrayscale(Texture2D graph)

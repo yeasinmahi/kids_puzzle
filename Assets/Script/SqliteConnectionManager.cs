@@ -1,6 +1,11 @@
 ﻿using Mono.Data.Sqlite;
 using System.Data;
 using UnityEngine;
+#if !UNITY_EDITOR
+using System.Collections;
+using System.IO;
+#endif
+using System.Collections.Generic;
 
 public class SqliteConnectionManager {
 
@@ -12,7 +17,7 @@ public class SqliteConnectionManager {
         }
         private set
         {
-            _connectionString = "URI=file:" + Application.dataPath + "KidsPuzzle.dll";
+            _connectionString = "file://" + Application.streamingAssetsPath + "/KidsPuzzle.dll";
         }
     }
     public static IDbConnection Conn
@@ -35,9 +40,9 @@ public class SqliteConnectionManager {
 
     static SqliteConnectionManager()
     {
-        _connectionString = "URI=file:" + Application.dataPath + "/KidsPuzzle.dll";
+        _connectionString = "file://" + Application.streamingAssetsPath + "/KidsPuzzle.dll";
         conn = new SqliteConnection(_connectionString);
         cmd = conn.CreateCommand();
     }
-    
+
 }

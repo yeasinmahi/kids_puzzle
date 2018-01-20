@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
 using UnityEngine;
 
 public class Others : MonoBehaviour
@@ -12,14 +14,24 @@ public class Others : MonoBehaviour
     }
     public static void WriteDebugLog(string key, string value)
     {
-        Debug.Log(key+": " + value);
+        Debug.Log(key + ": " + value);
     }
-    public static void CreateDirectory(string path)
+    public static bool CreateDirectory(string path)
     {
-        if (!Directory.Exists(path))
+        try
         {
-            Directory.CreateDirectory(path);
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+
+            }
+            return true;
         }
+        catch (Exception ex)
+        {
+            return false;
+        }
+
     }
     private const string MediaStoreImagesMediaClass = "android.provider.MediaStore$Images$Media";
     private static AndroidJavaObject _activity;
@@ -83,7 +95,7 @@ public class Others : MonoBehaviour
         for (int t = 0; t < sprites.Length; t++)
         {
             Sprite tmp = sprites[t];
-            int r = Random.Range(t, sprites.Length);
+            int r = UnityEngine.Random.Range(t, sprites.Length);
             sprites[t] = sprites[r];
             sprites[r] = tmp;
         }
@@ -93,4 +105,47 @@ public class Others : MonoBehaviour
     {
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100);
     }
+    public static string GetStreamingAssetsPath()
+    {
+        string path;
+#if UNITY_EDITOR
+        path = string.Format(@"Assets/StreamingAssets/");
+#elif UNITY_ANDROID
+     path = "jar:file://" + Application.dataPath + "!/assets/";
+#elif UNITY_IOS
+     path = Application.dataPath + "/Raw/";
+#elif UNITY_STANDALONE_OSX
+     path = Application.dataPath + "/Resources/Data/StreamingAssets/";
+#else
+     //Desktop (Mac OS or Windows)
+     path = Application.dataPath + "/StreamingAssets/";
+#endif
+
+        return path;
+    }
+    public static string GetStreamingAssetsPath(string fileName)
+    {
+        return GetStreamingAssetsPath() + fileName;
+    }
+    public static void get()
+    {
+        TextAsset[] l_assets = Resources.LoadAll("nameOfResourcesSubFolder", typeof(TextAsset)).Cast<TextAsset>().ToArray();
+        for (int i = 0; i < l_assets.Length; i++)
+        {
+            File.WriteAllBytes(Application.persistentDataPath + "/db/" + l_assets[i].name + ".dat", l_assets[i].bytes);
+        }
+
+    }
+
+    public static void WriteLogInText(string message)
+    {
+        Console.WriteLine(message);
+        string path = Application.persistentDataPath + "/kidsLog.txt";
+        using (FileStream fs = new FileStream(path, FileMode.Append, FileAccess.Write))
+        using (StreamWriter writetext = new StreamWriter(fs))
+        {
+            writetext.WriteLine(message);
+        }
+    }
+
 }

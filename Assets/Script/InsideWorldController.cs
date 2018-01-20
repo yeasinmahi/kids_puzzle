@@ -64,7 +64,7 @@ public class InsideWorldController : MonoBehaviour {
         GameObject go = Instantiate(prefab, pos, Quaternion.identity);
         go.transform.SetParent(itemParent.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
-        go.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource(insideWorld.ColorImage);
+        ImageManager.LoadSpriteFromResource(insideWorld.ColorImage, go.GetComponent<Image>().sprite);
         go.GetComponent<ChangeItemImage>().sl = insideWorld.Sl;
         if (insideWorld.IsComplete.Equals(0))
         {

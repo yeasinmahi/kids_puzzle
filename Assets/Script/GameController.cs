@@ -117,8 +117,8 @@ public class GameController : MonoBehaviour
             insideWorld = SqliteManager.GetInsideWorld(Others.insideWorldId);
             if (insideWorld != null)
             {
-                sourceColor = ImageManager.LoadTexureFromResource(insideWorld.ColorImage);
-                sourceBlack = ImageManager.LoadTexureFromResource(insideWorld.BWImage);
+                ImageManager.LoadTextureFromResource(insideWorld.ColorImage, sourceColor);
+                ImageManager.LoadTextureFromResource(insideWorld.BWImage, sourceBlack);
                 isGameDataReady = true;
                 ErrorCanvas.SetActive(false);
             }

@@ -23,13 +23,13 @@ public class ChangeItemImage : MonoBehaviour, IPointerEnterHandler, IPointerExit
                     switch (achivedToy)
                     {
                         case 1:
-                            button.gameObject.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource("toy1");
+                            ImageManager.LoadSpriteFromResource("toy1", button.gameObject.GetComponent<Image>().sprite);
                             break;
                         case 2:
-                            button.gameObject.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource("toy2");
+                            ImageManager.LoadSpriteFromResource("toy1", button.gameObject.GetComponent<Image>().sprite);
                             break;
                         case 3:
-                            button.gameObject.GetComponent<Image>().sprite = ImageManager.LoadSpriteFromResource("toy3");
+                            ImageManager.LoadSpriteFromResource("toy1", button.gameObject.GetComponent<Image>().sprite);
                             break;
                         default:
                             button.gameObject.SetActive(false);
