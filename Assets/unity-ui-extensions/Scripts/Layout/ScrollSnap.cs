@@ -10,7 +10,6 @@
 /// - fixed current page made it independent from pivot
 /// - replaced pagination with delegate function
 using System;
-using System.Collections.Generic;
 using UnityEngine.EventSystems;
 
 namespace UnityEngine.UI.Extensions

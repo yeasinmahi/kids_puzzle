@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class World {
+﻿public class World {
+    [PrimaryKey]
     public int Sl { get; set; }
     public string Name { get; set; }
     public string Image { get; set; }

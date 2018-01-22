@@ -1,7 +1,4 @@
-﻿using Mono.Data.Sqlite;
-using System.Data;
-using System.Data.SqlClient;
-using UnityEngine;
+﻿using System.Data.SqlClient;
 
 public class SqlConnectionManager {
 

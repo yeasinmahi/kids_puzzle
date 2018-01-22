@@ -127,6 +127,53 @@ public class Others : MonoBehaviour
     {
         return GetStreamingAssetsPath() + fileName;
     }
+    public static string GetPersistentDataPath()
+    {
+        return Application.persistentDataPath;
+    }
+    public static string GetPersistentDataPath(string fileName)
+    {
+        return string.Format("{0}/{1}", GetPersistentDataPath(), fileName);
+    }
+
+    public static void MoveAsset(string source, string destination)
+    {
+        if (!File.Exists(destination))
+        {
+            Debug.Log("Database not in Persistent path");
+            // if it doesn't ->
+            // open StreamingAssets directory and load the db ->
+
+#if UNITY_ANDROID
+            WWW www = new WWW(source);
+            while (!www.isDone) { }  // CAREFUL here, for safety reasons you shouldn't let this while loop unattended, place a timer and error check
+            // then save to Application.persistentDataPath
+            File.WriteAllBytes(destination, www.bytes);
+#elif UNITY_IOS
+                File.Copy(source, destination);
+		
+#elif UNITY_STANDALONE_OSX
+		File.Copy(source, destination);
+#else
+	File.Copy(source, destination);
+
+#endif
+
+            Debug.Log("Database written");
+        }
+    }
+    public static void MoveAssetStreamingToPersistendDataPath(string fileName)
+    {
+        MoveAsset(GetStreamingAssetsPath(fileName), GetDestinationPath(fileName));
+    }
+    public static string GetDestinationPath(string fileName)
+    {
+        string destinationFile =GetPersistentDataPath(fileName);
+#if UNITY_EDITOR
+        destinationFile = GetStreamingAssetsPath(fileName);
+#endif
+        return destinationFile;
+    }
     public static void get()
     {
         TextAsset[] l_assets = Resources.LoadAll("nameOfResourcesSubFolder", typeof(TextAsset)).Cast<TextAsset>().ToArray();

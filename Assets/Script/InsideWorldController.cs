@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -64,7 +63,7 @@ public class InsideWorldController : MonoBehaviour {
         GameObject go = Instantiate(prefab, pos, Quaternion.identity);
         go.transform.SetParent(itemParent.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
-        ImageManager.LoadSpriteFromResource(insideWorld.ColorImage, go.GetComponent<Image>().sprite);
+        go.GetComponent<Image>().sprite = ImageManager.GetSprite(insideWorld.ColorImage);
         go.GetComponent<ChangeItemImage>().sl = insideWorld.Sl;
         if (insideWorld.IsComplete.Equals(0))
         {

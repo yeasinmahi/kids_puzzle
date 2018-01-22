@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -117,8 +116,8 @@ public class GameController : MonoBehaviour
             insideWorld = SqliteManager.GetInsideWorld(Others.insideWorldId);
             if (insideWorld != null)
             {
-                ImageManager.LoadTextureFromResource(insideWorld.ColorImage, sourceColor);
-                ImageManager.LoadTextureFromResource(insideWorld.BWImage, sourceBlack);
+                sourceColor = ImageManager.GetTexture(insideWorld.ColorImage);
+                sourceBlack =ImageManager.GetTexture(insideWorld.BWImage);
                 isGameDataReady = true;
                 ErrorCanvas.SetActive(false);
             }
@@ -286,7 +285,7 @@ public class GameController : MonoBehaviour
         ManageGameOverToyStar(currentStar);
         int achievedToy = SqliteManager.GetAchievedToy(Others.insideWorldId);
         
-        if ( achievedToy > 0 && currentStar > achievedToy)
+        if (currentStar > achievedToy)
         {
             SqliteManager.UpdateIsCompleteAndToyIntoInsideWorld(Others.insideWorldId, 1, currentStar);
         }

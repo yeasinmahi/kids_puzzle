@@ -1,65 +1,25 @@
-﻿using UnityEngine;
-using System.Linq;
+﻿using System.Linq;
 #if !UNITY_EDITOR
 using System.Collections;
 using System.IO;
 #endif
 using System.Collections.Generic;
 
-public class DataService  {
+public class DataService
+{
 
-	private SQLiteConnection _connection;
+    private SQLiteConnection _connection;
 
-	public DataService(string DatabaseName){
+    public DataService(string DatabaseName)
+    {
+        Others.MoveAssetStreamingToPersistendDataPath(DatabaseName);
+        _connection = new SQLiteConnection(Others.GetDestinationPath(DatabaseName), SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
+    }
 
-#if UNITY_EDITOR
-            var dbPath = string.Format(@"Assets/StreamingAssets/{0}", DatabaseName);
-#else
-        // check if file exists in Application.persistentDataPath
-        var filepath = string.Format("{0}/{1}", Application.persistentDataPath, DatabaseName);
-
-        if (!File.Exists(filepath))
-        {
-            Debug.Log("Database not in Persistent path");
-            // if it doesn't ->
-            // open StreamingAssets directory and load the db ->
-
-#if UNITY_ANDROID 
-            var loadDb = new WWW("jar:file://" + Application.dataPath + "!/assets/" + DatabaseName);  // this is the path to your StreamingAssets in android
-            while (!loadDb.isDone) { }  // CAREFUL here, for safety reasons you shouldn't let this while loop unattended, place a timer and error check
-            // then save to Application.persistentDataPath
-            File.WriteAllBytes(filepath, loadDb.bytes);
-#elif UNITY_IOS
-                 var loadDb = Application.dataPath + "/Raw/" + DatabaseName;  // this is the path to your StreamingAssets in iOS
-                // then save to Application.persistentDataPath
-                File.Copy(loadDb, filepath);
-		
-#elif UNITY_STANDALONE_OSX
-		var loadDb = Application.dataPath + "/Resources/Data/StreamingAssets/" + DatabaseName;  // this is the path to your StreamingAssets in iOS
-		// then save to Application.persistentDataPath
-		File.Copy(loadDb, filepath);
-#else
-	var loadDb = Application.dataPath + "/StreamingAssets/" + DatabaseName;  // this is the path to your StreamingAssets in iOS
-	// then save to Application.persistentDataPath
-	File.Copy(loadDb, filepath);
-
-#endif
-
-            Debug.Log("Database written");
-        }
-
-        var dbPath = filepath;
-#endif
-            _connection = new SQLiteConnection(dbPath, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create);
-        Debug.Log("Final PATH: " + dbPath);     
-
-	}
-
-	public void CreateDB(){
-		_connection.DropTable<World> ();
-		_connection.CreateTable<World> ();
-
-       
+    public void CreateDB()
+    {
+        _connection.DropTable<World>();
+        _connection.CreateTable<World>();
         _connection.InsertAll(new[]{
             new World{
                 Sl = 1,
@@ -68,7 +28,7 @@ public class DataService  {
                 IsReady = 1,
                 TargetedToy = 0,
                 UpdateDate = System.DateTime.Now.ToString()
-			},
+            },
             new World{
                 Sl = 2,
                 Name = "Flower World",
@@ -105,7 +65,6 @@ public class DataService  {
         });
         _connection.DropTable<InsideWorld>();
         _connection.CreateTable<InsideWorld>();
-
         _connection.InsertAll(new[]{
             new InsideWorld{
                 Sl = 1,
@@ -165,20 +124,65 @@ public class DataService  {
 
         });
     }
-
-    public List<World> GetWorlds(){
-		return _connection.Table<World>().ToList();
-	}
+    #region Get
+    public List<World> GetWorlds()
+    {
+        return _connection.Table<World>().ToList();
+    }
     public List<InsideWorld> GetInsideWorlds()
     {
         return _connection.Table<InsideWorld>().ToList();
     }
     public List<InsideWorld> GetInsideWorlds(int worldId)
     {
-        return _connection.Table<InsideWorld>().Where(x=>x.WorldId.Equals(worldId)).ToList();
+        return _connection.Table<InsideWorld>().Where(x => x.WorldId.Equals(worldId)).ToList();
     }
-    public int GetTotalAchivedToy(int worldId)
+    public World GetWorld(int worldId)
     {
-        return _connection.Table<InsideWorld>().Where(x => x.WorldId.Equals(worldId)).Sum(x => x.AchievedToy);
+        return _connection.Find<World>(worldId);
     }
+    public InsideWorld GetInsideWorld(int insideWorldId)
+    {
+        return _connection.Find<InsideWorld>(insideWorldId);
+    }
+    public int GetAchivedToy(int insideWorldId)
+    {
+        return _connection.Get<InsideWorld>(e => e.Sl.Equals(insideWorldId)).AchievedToy;
+        //return _connection.Table<InsideWorld>().Where(x => x.WorldId.Equals(worldId)).Sum(x => x.AchievedToy);
+    }
+    public int GetTotalAchivedToy()
+    {
+        return _connection.Table<InsideWorld>().Sum(x => x.AchievedToy);
+    }
+    #endregion
+    #region Insert
+    public bool InsertWorld(World world)
+    {
+        return _connection.Insert(world) > 0;
+    }
+    public bool InsertInsideWorld(InsideWorld insideWorld)
+    {
+        return _connection.Insert(insideWorld) > 0;
+    }
+    #endregion
+    #region Delete
+    public bool DeleteWorld(int worldId)
+    {
+        return _connection.Delete<World>(worldId) > 0;
+    }
+    public bool DeleteInsideWorld(int insideWorldId)
+    {
+        return _connection.Delete<World>(insideWorldId) > 0;
+    }
+    #endregion
+    #region Update
+    public bool UpdateWorld(World world)
+    {
+        return _connection.Update(world) > 0;
+    }
+    public bool UpdateInsideWorld(InsideWorld insideWorld)
+    {
+        return _connection.Update(insideWorld) > 0;
+    }
+    #endregion
 }

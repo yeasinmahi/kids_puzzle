@@ -127,7 +127,7 @@ using Sqlite3Statement = System.IntPtr;
 		private TimeSpan _busyTimeout;
 		private Dictionary<string, TableMapping> _mappings = null;
 		private Dictionary<string, TableMapping> _tables = null;
-		private System.Diagnostics.Stopwatch _sw;
+		private Stopwatch _sw;
 		private TimeSpan _elapsed = default(TimeSpan);
 
 		private int _transactionDepth = 0;
@@ -845,6 +845,7 @@ using Sqlite3Statement = System.IntPtr;
 		public T Get<T> (Expression<Func<T, bool>> predicate) where T : new()
 		{
 			return Table<T> ().Where (predicate).First ();
+       
 		}
 
 		/// <summary>

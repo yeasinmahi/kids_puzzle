@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.IO;
-using System.Runtime.InteropServices;
 public class NativeShare : MonoBehaviour
 {
     public string subject, ShareMessage, url;

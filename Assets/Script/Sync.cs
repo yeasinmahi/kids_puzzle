@@ -1,9 +1,6 @@
-﻿using Mono.Data.Sqlite;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using UnityEngine;
 
 public class Sync : MonoBehaviour

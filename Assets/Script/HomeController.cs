@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 public class HomeController : MonoBehaviour {
@@ -14,12 +13,14 @@ public class HomeController : MonoBehaviour {
     public Sprite mike_disable;
     public GameObject listBank;
     public GameObject prefab;
+    private int achivedToy;
     void Awake()
     {
         if (instance == null)
         {
             instance = this;
             AudioSource = GetComponent<AudioSource>();
+            achivedToy = SqliteManager.GetTotalAchivedToy();
             PlayBackgroundSound();
             List<World> worlds = SqliteManager.GetWorlds();
             ListPositionCtrl.Instance.listBoxes = new ListBox[worlds.Count];
@@ -85,10 +86,9 @@ public class HomeController : MonoBehaviour {
         Others.WriteLogInText("instantiate prefabs" + world.Sl);
         go.transform.SetParent(listBank.transform);
         go.transform.localScale = new Vector3(1, 1, 1);
-        ImageManager.LoadSpriteFromResource(world.Image, go.GetComponent<Image>().sprite);
+        go.GetComponent<Image>().sprite = ImageManager.GetSprite(world.Image);
         go.GetComponent<Button>().onClick.AddListener(delegate { WorldOnClick(go); });
         go.GetComponent<ChangeItemImage>().sl = world.Sl;
-        int achivedToy = SqliteManager.GetTotalAchivedToy(world.Sl);
         if (achivedToy >= world.TargetedToy)
         {
             go.GetComponent<ChangeItemImage>().isLock = false;

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ImageManager : MonoBehaviour
 {
@@ -42,47 +38,21 @@ public class ImageManager : MonoBehaviour
     //}
 
 
-    public static IEnumerator LoadSpriteFromResource(string imageName, Sprite sprite)
+    public static Sprite GetSprite(string imageName)
     {
-        WWW www = new WWW("file://" + System.IO.Path.Combine(Application.streamingAssetsPath, fileName));
-        Texture2D texture;
-        while (!www.isDone)
-        {
-            yield return null;
-        }
-
-        if (!string.IsNullOrEmpty(www.error))
-        {
-            Debug.Log(www.error);
-            yield break;
-        }
-        else
-        {
-            texture = www.texture;
-            sprite = Sprite.Create(texture as Texture2D, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
-        }
-
-        yield return 0;
+        Texture2D texture = GetTexture(imageName);
+        return Sprite.Create(texture as Texture2D, new Rect(0, 0, texture.width, texture.height), Vector2.zero);
     }
-    public static IEnumerator LoadTextureFromResource(string imageName, Texture texture)
+    public static Texture2D GetTexture(string imageName)
     {
-        WWW www = new WWW("file://" + System.IO.Path.Combine(Application.streamingAssetsPath, fileName));
-        while (!www.isDone)
-        {
-            yield return null;
-        }
-
-        if (!string.IsNullOrEmpty(www.error))
-        {
-            Debug.Log(www.error);
-            yield break;
-        }
-        else
-        {
-            texture = www.texture;
-        }
-
-        yield return 0;
+        Others.MoveAssetStreamingToPersistendDataPath(imageName + ".jpg");
+        byte[] bytes = File.ReadAllBytes(Others.GetDestinationPath(imageName + ".jpg"));
+        Texture2D texture = new Texture2D(100, 100);
+        texture.LoadImage(bytes);
+        return texture;
+        //WWW www = new WWW(Others.GetDestinationPath(imageName + ".jpg"));
+        //while (!www.isDone) { }
+        //return www.texture;
     }
     public static void SaveImage(Texture2D texture, string fileLocation, string fileName)
     {

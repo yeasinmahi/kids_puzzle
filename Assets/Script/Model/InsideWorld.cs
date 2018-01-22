@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class InsideWorld {
+﻿public class InsideWorld {
+    [PrimaryKey]
     public int Sl { get; set; }
     public string ColorImage { get; set; }
     public string BWImage { get; set; }

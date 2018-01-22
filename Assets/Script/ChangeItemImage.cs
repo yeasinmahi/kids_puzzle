@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -23,13 +21,13 @@ public class ChangeItemImage : MonoBehaviour, IPointerEnterHandler, IPointerExit
                     switch (achivedToy)
                     {
                         case 1:
-                            ImageManager.LoadSpriteFromResource("toy1", button.gameObject.GetComponent<Image>().sprite);
+                            button.gameObject.GetComponent<Image>().sprite = ImageManager.GetSprite("toy1");
                             break;
                         case 2:
-                            ImageManager.LoadSpriteFromResource("toy1", button.gameObject.GetComponent<Image>().sprite);
+                            button.gameObject.GetComponent<Image>().sprite = ImageManager.GetSprite("toy2");
                             break;
                         case 3:
-                            ImageManager.LoadSpriteFromResource("toy1", button.gameObject.GetComponent<Image>().sprite);
+                            button.gameObject.GetComponent<Image>().sprite = ImageManager.GetSprite("toy3");
                             break;
                         default:
                             button.gameObject.SetActive(false);

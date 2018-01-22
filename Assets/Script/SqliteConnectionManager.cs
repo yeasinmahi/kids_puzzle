@@ -5,7 +5,6 @@ using UnityEngine;
 using System.Collections;
 using System.IO;
 #endif
-using System.Collections.Generic;
 
 public class SqliteConnectionManager {
 
